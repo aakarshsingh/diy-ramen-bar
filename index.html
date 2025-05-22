@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY Korean Ramen Bar 🍜</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #e74c3c, #f39c12);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .left-section {
+            display: grid;
+            gap: 25px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-color: #fff;
+            border: 1px solid #eee;
+        }
+
+        .ingredient-item:hover {
+            background: rgba(231, 76, 60, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .ingredient-item input[type="checkbox"],
+        .ingredient-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #e74c3c;
+        }
+
+        .ingredient-item label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #2c3e50;
+            flex-grow: 1;
+        }
+
+        .right-section {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .ramen-display {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #e74c3c;
+        }
+
+        .guest-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .guest-info input {
+            font-size: 1.1em;
+            padding: 12px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .guest-info input::placeholder {
+            color: #aaa;
+        }
+
+
+        .ramen-name {
+            font-size: 1.7em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 15px 0;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff5f5;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .funkiness-meter {
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .funkiness-meter h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .funkiness-bar {
+            background: #bdc3c7;
+            height: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .funkiness-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+            width: 0%;
+        }
+        #funkiness-text {
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .selected-ingredients {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+        }
+
+        .selected-ingredients h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .selected-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selected-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .bottom-right-widgets {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column; 
+            gap: 15px;
+            align-items: flex-end;
+            z-index: 1000;
+        }
+
+        .leaderboard {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 320px; 
+            max-height: 300px; 
+            overflow-y: auto;
+        }
+
+        .leaderboard h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .leaderboard-item {
+            padding: 10px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #eee;
+        }
+        .leaderboard-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+        .leaderboard-item div:first-child {
+            flex-grow: 1;
+        }
+        .leaderboard-item div:last-child {
+            text-align: right;
+            min-width: 80px;
+        }
+        .leaderboard-item small {
+            color: #555;
+            display: block;
+        }
+
+        .admin-panel {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 320px; 
+        }
+        .admin-panel strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .admin-panel button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .admin-panel button:hover {
+            background: #c0392b;
+        }
+
+        /* Enhanced Styles for Recipe Card Export View */
+        #recipe-card-export-view {
+            display: none; 
+            width: 420px; 
+            padding: 25px;
+            background-color: #fff8f0; 
+            background-image: 
+                linear-gradient(45deg, #ffe5d9 25%, transparent 25%), 
+                linear-gradient(-45deg, #ffe5d9 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ffe5d9 75%),
+                linear-gradient(-45deg, transparent 75%, #ffe5d9 75%);
+            background-size: 20px 20px;
+            border: 3px solid #e74c3c;
+            border-radius: 15px;
+            font-family: Arial, Helvetica, sans-serif; /* Changed to clear sans-serif */
+            color: #333; /* Darker text for better contrast */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        #recipe-card-export-view h1, 
+        #recipe-card-export-view h2, 
+        #recipe-card-export-view h3 {
+            color: #d35400; 
+            text-align: center;
+            /* Using a more standard bold font stack */
+            font-family: 'Arial Black', Gadget, sans-serif; 
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.05); /* Softer shadow */
+        }
+        #recipe-card-export-view h1 { 
+            font-size: 2em; /* Adjusted size */
+            margin-bottom: 8px;
+            letter-spacing: 0.5px; /* Reduced letter spacing */
+        }
+        #recipe-card-export-view h2 { /* Ramen Name */
+            font-size: 1.5em; /* Adjusted size */
+            margin-bottom: 12px; 
+            font-style: normal; 
+            color: #e67e22; 
+        }
+        #recipe-card-export-view .guest-name-export { 
+            font-size: 1.1em; /* Adjusted size */
+            text-align:center; 
+            margin-bottom: 18px; 
+            color: #555; /* Slightly darker */
+            font-style: italic;
+        }
+        #recipe-card-export-view .funkiness-export { 
+            font-size: 1.2em; /* Adjusted size */
+            text-align:center; 
+            margin-bottom:18px; 
+            font-weight:bold;
+            color: #c0392b; 
+            border-top: 1px dashed #f39c12;
+            border-bottom: 1px dashed #f39c12;
+            padding: 8px 0;
+        }
+        #recipe-card-export-view .ingredients-title-export {
+            font-size: 1.3em; /* Adjusted size */
+            margin-top:20px; 
+            margin-bottom:10px; 
+            border-bottom: 2px solid #e74c3c; 
+            padding-bottom: 6px;
+            text-align: left; 
+            font-family: 'Arial Black', Gadget, sans-serif; /* Consistent with other titles */
+        }
+        #recipe-card-export-view ul { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 8px;
+            columns: 2; 
+            gap: 15px;
+            font-family: Arial, Helvetica, sans-serif; /* Ensure body font */
+        }
+        #recipe-card-export-view li { 
+            margin: 5px 0; /* Adjusted margin */
+            font-size: 0.95em; /* Adjusted size */
+            padding-left: 22px; 
+            position: relative; 
+            line-height: 1.4; /* Improved line spacing */
+        }
+        #recipe-card-export-view li::before {
+            content: '🍜'; /* Changed to ramen emoji for theme */
+            position: absolute;
+            left: 0;
+            top: 0px; /* Fine-tuned vertical alignment */
+            font-size: 0.9em; /* Adjust emoji size if needed */
+        }
+        #recipe-card-export-view .footer-export { 
+            text-align:center; 
+            margin-top:25px; 
+            font-size:0.8em; /* Adjusted size */
+            color: #777; /* Slightly darker */
+            border-top: 1px solid #ecf0f1;
+            padding-top: 10px;
+            font-family: Arial, Helvetica, sans-serif; /* Ensure body font */
+        }
+
+
+        @media (max-width: 992px) { 
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .right-section {
+                position: relative; 
+                top: auto;
+                margin-top: 30px;
+            }
+            .bottom-right-widgets { 
+                position: relative; 
+                bottom: auto;
+                right: auto;
+                flex-direction: column;
+                align-items: center; 
+                margin-top: 20px;
+            }
+            .leaderboard, .admin-panel {
+                width: 90%; 
+                max-width: 400px; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; } 
+            .container { border-radius: 10px; } 
+
+            .header h1 { font-size: 2.2em; }
+            .header p { font-size: 1em; }
+            
+            .bottom-right-widgets {
+                align-items: stretch; 
+            }
+            .leaderboard, .admin-panel {
+                width: 100%; 
+                max-width: none;
+            }
+             #ingredient-modal > div { 
+                width: 95% !important;
+                padding: 20px !important;
+                max-height: 85vh;
+            }
+            .ingredients-grid { grid-template-columns: 1fr; }
+            .section { padding: 15px; }
+            .main-content { padding: 15px; gap: 20px; }
+        }
+
+        #ingredient-modal {
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7); 
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px; 
+        }
+        #ingredient-modal > div { 
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 100%; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        #ingredient-modal h2 {
+            color: #e74c3c;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8em;
+        }
+        #ingredient-modal label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        #ingredient-modal select, #ingredient-modal input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 10px; 
+        }
+        #ingredient-modal .ingredient-special-checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        #ingredient-modal .ingredient-special-checkbox-container input[type="checkbox"] {
+            width: auto; 
+            margin-bottom: 0;
+        }
+
+        #ingredient-modal button { 
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        #ingredient-modal .modal-action-button { 
+             background: #27ae60; color: white; border: none;
+        }
+        #ingredient-modal .modal-action-button:hover {
+            background: #229954;
+        }
+        #current-ingredients-list {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f9f9f9;
+            margin-bottom: 20px;
+        }
+        #current-ingredients-list .ingredient-manager-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            gap: 10px; 
+        }
+        #current-ingredients-list .ingredient-manager-item:last-child {
+            border-bottom: none;
+        }
+        #current-ingredients-list .ingredient-manager-item .name-special-group {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #current-ingredients-list .ingredient-manager-item .name-special-group input[type="checkbox"] {
+             width: auto; 
+        }
+
+        #current-ingredients-list .ingredient-manager-item button { 
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            flex-shrink: 0; 
+        }
+        #current-ingredients-list .ingredient-manager-item button:hover {
+            background: #c0392b;
+        }
+        .modal-button-group {
+            text-align: center;
+            gap: 10px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; 
+        }
+        .modal-button-group button { 
+             background: #95a5a6; color: white; border: none;
+        }
+         .modal-button-group button.reset-btn {
+            background: #e74c3c;
+        }
+        .modal-button-group button:hover {
+            opacity: 0.85;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍜 DIY Korean Ramen Bar</h1>
+            <p>Create Your Perfect Bowl & Discover Your Funkiness Level!</p>
+        </div>
+
+        <div class="main-content">
+            <div class="left-section">
+                <div class="section">
+                    <h3>🍲 Choose Your Ramen Base</h3>
+                    <div class="ingredients-grid" id="ramen-base"></div>
+                </div>
+                <div class="section">
+                    <h3>🥚 Proteins</h3>
+                    <div class="ingredients-grid" id="proteins"></div>
+                </div>
+                <div class="section">
+                    <h3>🥬 Vegetables</h3>
+                    <div class="ingredients-grid" id="vegetables"></div>
+                </div>
+                <div class="section">
+                    <h3>🍘 Crunchy Toppings</h3>
+                    <div class="ingredients-grid" id="crunchy"></div>
+                </div>
+                <div class="section">
+                    <h3>🧂 Condiments</h3>
+                    <div class="ingredients-grid" id="condiments"></div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="ramen-display">
+                    <div class="guest-info">
+                        <input type="text" id="guest-name" placeholder="Enter your name" maxlength="25">
+                    </div>
+                    <div class="ramen-name" id="ramen-name">Pick ingredients to get your ramen name!</div>
+                    <div class="funkiness-meter">
+                        <h4>Funkiness Level</h4>
+                        <div class="funkiness-bar">
+                            <div class="funkiness-fill" id="funkiness-fill"></div>
+                        </div>
+                        <span id="funkiness-text">0% - Not Very Funky... yet!</span>
+                    </div>
+                    <div class="selected-ingredients">
+                        <h4>Your Bowl Contains:</h4>
+                        <div class="selected-list" id="selected-list">
+                            <span style="color: #7f8c8d; font-style: italic;">Nothing selected yet...</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveToLeaderboard()">🏆 Add to Leaderboard</button>
+                        <button class="btn btn-primary" onclick="exportRecipeAsImage()">🖼️ Export as Image</button>
+                        <button class="btn btn-secondary" onclick="clearSelection()">🔄 Start Over</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-right-widgets">
+        <div class="leaderboard" id="leaderboard">
+            <h3>🏆 Funkiest Creations</h3>
+            <div id="leaderboard-list">
+                <p style="color: #7f8c8d; text-align: center;">No entries yet! Be the first!</p>
+            </div>
+        </div>
+        <div class="admin-panel">
+            <strong>Admin Panel:</strong>
+            <button onclick="clearLeaderboard()">Clear Board</button>
+            <button onclick="exportLeaderboardData()">Export Data</button> <button onclick="openIngredientManager()">Edit Ingredients</button>
+        </div>
+    </div>
+
+    <div id="ingredient-modal">
+        <div> 
+            <h2>🔧 Ingredient Manager</h2>
+            <div style="margin-bottom: 20px;">
+                <label for="category-select">Category:</label>
+                <select id="category-select">
+                    <option value="ramen-base">🍲 Ramen Base</option>
+                    <option value="proteins">🥚 Proteins</option>
+                    <option value="vegetables">🥬 Vegetables</option>
+                    <option value="crunchy">🍘 Crunchy Toppings</option>
+                    <option value="condiments">🧂 Condiments</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="new-ingredient-input">Add New Ingredient:</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="new-ingredient-input" placeholder="Enter ingredient name" style="flex-grow:1; margin-bottom:0;">
+                    <button onclick="addIngredientFromModal()" class="modal-action-button">Add</button> </div>
+                 <div class="ingredient-special-checkbox-container" style="margin-top:10px;">
+                    <input type="checkbox" id="new-ingredient-special">
+                    <label for="new-ingredient-special">Mark as Special Ingredient</label>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label>Current Ingredients in Selected Category:</label>
+                <div id="current-ingredients-list"></div>
+            </div>
+            <div class="modal-button-group">
+                <button onclick="closeIngredientManager()">Close</button>
+                <button onclick="resetIngredientsToDefaults()" class="reset-btn">Reset All to Defaults</button> </div>
+        </div>
+    </div>
+
+    <div id="recipe-card-export-view"></div>
+
+    <script>
+        // Ramen names database
+        const ramenNames = [
+            "Seoul-ful Slurper", "Kimchi King Bowl", "Spicy Seoul Surprise", "Bulgogi Bomb", 
+            "K-Pop Noodle Drop", "Gangnam Style Soup", "Bibim-Boom Bowl", "Seoul Food Express",
+            "Ramen-tic Comedy", "Noodle Ninja Creation", "Slurp-tastic Special", "Bowl-dacious Beauty"
+            // ... more names
+        ];
+
+        // Fusion combinations for extra funkiness
+        const fusionCombos = [
+            ["Paneer Cubes", "Maggi Magic Masala"], ["Crushed Papdi", "Kimchi Bowl"],
+            ["Fish Sauce", "Grated Carrots"], ["Roasted Peanuts", "Chili Oil"]
+            // ... more combos
+        ];
+
+        let currentSelection = {
+            base: "",
+            ingredients: [],
+            guestName: "",
+            funkiness: 0,
+            ramenName: ""
+        };
+
+        // Default ingredients configuration with isSpecial flag
+        const defaultIngredients = {
+            "ramen-base": [
+                { value: "Shin Cup (Spicy)", label: "Shin Cup (Spicy)", id: "shin-cup-spicy", isSpecial: false },
+                { value: "Kimchi Bowl", label: "Kimchi Bowl", id: "kimchi-bowl", isSpecial: true }, // Example special
+                { value: "Chapagetti", label: "Chapagetti", id: "chapagetti-noodles", isSpecial: false },
+                { value: "Neoguri", label: "Neoguri (Spicy Seafood)", id: "neoguri-spicy-seafood", isSpecial: false }
+            ],
+            "proteins": [
+                { value: "Hard-boiled Eggs", label: "Hard-boiled Eggs", id: "hard-boiled-eggs", isSpecial: false },
+                { value: "Cubed Tofu", label: "Cubed Tofu", id: "cubed-tofu", isSpecial: false },
+                { value: "Paneer Cubes", label: "Paneer Cubes", id: "paneer-cubes", isSpecial: true }, // Example special
+                { value: "Chicken Slivers", label: "Chicken Slivers (Cooked)", id: "chicken-slivers-cooked", isSpecial: false }
+            ],
+            "vegetables": [
+                { value: "Sweet Corn", label: "Sweet Corn Kernels", id: "sweet-corn-kernels", isSpecial: false },
+                { value: "Spring Onions", label: "Spring Onions (Chopped)", id: "spring-onions-chopped", isSpecial: false },
+                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: true }, // Example special
+                 { value: "Shredded Cabbage", label: "Shredded Cabbage", id: "shredded-cabbage", isSpecial: false },
+                { value: "Bean Sprouts", label: "Bean Sprouts (Fresh)", id: "bean-sprouts-fresh", isSpecial: false },
+                { value: "Grated Carrots", label: "Grated Carrots", id: "grated-carrots", isSpecial: false },
+                { value: "Blanched Spinach", label: "Blanched Spinach", id: "blanched-spinach", isSpecial: false },
+                { value: "Green Chilies", label: "Green Chilies (Sliced)", id: "green-chilies-sliced", isSpecial: false },
+                { value: "Cherry Tomatoes", label: "Cherry Tomatoes (Halved)", id: "cherry-tomatoes-halved", isSpecial: false }
+            ],
+            "crunchy": [
+                { value: "Fried Garlic", label: "Fried Garlic Flakes", id: "fried-garlic-flakes", isSpecial: true }, 
+                { value: "Sesame Seeds", label: "Toasted Sesame Seeds", id: "toasted-sesame-seeds", isSpecial: false },
+                { value: "Roasted Peanuts", label: "Roasted Peanuts (Crushed)", id: "roasted-peanuts-crushed", isSpecial: false },
+                { value: "Crushed Papdi", label: "Crushed Papdi/Crackers", id: "crushed-papdi-crackers", isSpecial: false },
+                { value: "Nori Flakes", label: "Nori (Seaweed) Flakes", id: "nori-seaweed-flakes", isSpecial: false }
+            ],
+            "condiments": [
+                { value: "Soy Sauce", label: "Soy Sauce", id: "soy-sauce", isSpecial: false },
+                { value: "Chili Oil", label: "Chili Oil", id: "chili-oil-condiment", isSpecial: true }, 
+                { value: "Maggi Magic Masala", label: "Maggi Magic Masala", id: "maggi-magic-masala", isSpecial: true }, 
+                { value: "Sesame Oil", label: "Toasted Sesame Oil", id: "toasted-sesame-oil", isSpecial: false },
+                { value: "Sriracha", label: "Sriracha Hot Sauce", id: "sriracha-hot-sauce", isSpecial: false },
+                { value: "Mayonnaise", label: "Kewpie Mayonnaise", id: "kewpie-mayonnaise", isSpecial: false },
+                { value: "Lime Juice", label: "Fresh Lime Juice", id: "fresh-lime-juice", isSpecial: false },
+                { value: "Fish Sauce", label: "Fish Sauce (Optional)", id: "fish-sauce-optional", isSpecial: false }
+            ]
+        };
+
+        let customIngredients = JSON.parse(localStorage.getItem('customIngredientsV3')) || JSON.parse(JSON.stringify(defaultIngredients)); 
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCustomIngredientsToPage(); 
+            loadLeaderboard();
+            document.getElementById('guest-name').addEventListener('input', updateSelection);
+            document.getElementById('category-select').addEventListener('change', populateIngredientsInModal); 
+            updateDisplay();
+        });
+
+        function createIdFromString(label, category = '') {
+            return (category + '-' + label).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '').replace(/^-/, '');
+        }
+
+        function loadCustomIngredientsToPage() {
+            for (const categoryId in customIngredients) {
+                const container = document.getElementById(categoryId);
+                if (!container) continue;
+                container.innerHTML = '';
+                customIngredients[categoryId].forEach(item => {
+                    if (!item.id) item.id = createIdFromString(item.label, categoryId); 
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'ingredient-item';
+                    const input = document.createElement('input');
+                    input.type = (categoryId === 'ramen-base') ? 'radio' : 'checkbox';
+                    if (categoryId === 'ramen-base') input.name = 'base';
+                    input.value = item.value;
+                    input.id = item.id;
+                    input.addEventListener('change', updateSelection); 
+                    const label = document.createElement('label');
+                    label.htmlFor = item.id;
+                    label.textContent = item.label;
+                    if (item.isSpecial) { 
+                        const specialMarker = document.createElement('span');
+                        specialMarker.textContent = ' ✨'; 
+                        specialMarker.title = 'Special Ingredient';
+                        label.appendChild(specialMarker);
+                    }
+                    itemDiv.appendChild(input);
+                    itemDiv.appendChild(label);
+                    container.appendChild(itemDiv);
+                });
+            }
+        }
+
+        function updateSelection() {
+            const baseRadio = document.querySelector('input[name="base"]:checked');
+            currentSelection.base = baseRadio ? baseRadio.value : "";
+            const checkboxes = document.querySelectorAll('.left-section input[type="checkbox"]:checked');
+            currentSelection.ingredients = Array.from(checkboxes).map(cb => cb.value);
+            currentSelection.guestName = document.getElementById('guest-name').value;
+            calculateFunkiness();
+            generateRamenName();
+            updateDisplay();
+        }
+
+        function calculateFunkiness() {
+            let score = 0;
+            let specialIngredientCount = 0;
+            const allSelectedValues = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
+
+            allSelectedValues.forEach(selectedValue => {
+                let ingredientObj = null;
+                for (const category in customIngredients) {
+                    ingredientObj = customIngredients[category].find(ing => ing.value === selectedValue);
+                    if (ingredientObj) break;
+                }
+                if (ingredientObj) {
+                    score += 5; 
+                    if (ingredientObj.isSpecial) {
+                        score += 15; 
+                        specialIngredientCount++;
+                    }
+                }
+            });
+            if (specialIngredientCount >= 2) score += 10; 
+            if (specialIngredientCount >=3) score += 5 * (specialIngredientCount - 2); 
+            fusionCombos.forEach(combo => {
+                if (combo.every(item => allSelectedValues.includes(item))) score += 12; 
+            });
+            const randomFactor = Math.floor(Math.random() * 7) - 3; 
+            score += randomFactor;
+            currentSelection.funkiness = Math.min(Math.max(0, score), 100); 
+        }
+
+        function generateRamenName() {
+            if (currentSelection.ingredients.length === 0 && !currentSelection.base) {
+                currentSelection.ramenName = "Pick ingredients to get your ramen name!";
+                return;
+            }
+            let namePool = [...ramenNames]; 
+            if (currentSelection.funkiness > 80 || currentSelection.ingredients.some(ingValue => {
+                for (const category in customIngredients) {
+                    const foundIng = customIngredients[category].find(ing => ing.value === ingValue);
+                    if (foundIng && foundIng.isSpecial) return true;
+                }
+                return false;
+            })) {
+                namePool.push("The Funkinator 3000", "Galaxy Brain Bowl", "Spicy Supernova Slurp");
+            }
+            if (currentSelection.funkiness < 20 && currentSelection.ingredients.length > 0) {
+                namePool.push("The Humble Starter", "Simple Slurp Sensation", "Beginner's Bliss Bowl");
+            }
+            const randomIndex = Math.floor(Math.random() * namePool.length);
+            currentSelection.ramenName = namePool[randomIndex];
+        }
+
+        function updateDisplay() {
+            document.getElementById('ramen-name').textContent = currentSelection.ramenName;
+            const funkinessBar = document.getElementById('funkiness-fill');
+            const funkinessText = document.getElementById('funkiness-text');
+            funkinessBar.style.width = currentSelection.funkiness + '%';
+            let funkinessLevel = "Not Very Funky... yet!";
+            if (currentSelection.funkiness > 85) funkinessLevel = "MAXIMUM FUNK! 🚀🔥";
+            else if (currentSelection.funkiness > 65) funkinessLevel = "Seriously Funky! 😎✨";
+            else if (currentSelection.funkiness > 40) funkinessLevel = "Getting Funky! 👍";
+            else if (currentSelection.funkiness > 15) funkinessLevel = "A Hint of Funk! 🤔";
+            funkinessText.textContent = `${currentSelection.funkiness}% - ${funkinessLevel}`;
+            const selectedList = document.getElementById('selected-list');
+            const allSelected = [currentSelection.base, ...currentSelection.ingredients].filter(item => item); 
+            if (allSelected.length === 0) {
+                selectedList.innerHTML = '<span style="color: #7f8c8d; font-style: italic;">Nothing selected yet...</span>';
+            } else {
+                selectedList.innerHTML = allSelected.map(item => `<span class="selected-tag">${item}</span>`).join('');
+            }
+        }
+
+        function saveToLeaderboard() {
+            if (!currentSelection.guestName.trim()) { console.error('Guest name is required for leaderboard.'); return; }
+            if (currentSelection.ingredients.length === 0 && !currentSelection.base) { console.error('Cannot add empty bowl to leaderboard.'); return; }
+            const entry = {
+                name: currentSelection.guestName.trim(),
+                ramenName: currentSelection.ramenName,
+                funkiness: currentSelection.funkiness,
+                ingredients: [currentSelection.base, ...currentSelection.ingredients].filter(Boolean),
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+            };
+            let leaderboard = JSON.parse(localStorage.getItem('ramenLeaderboardV3')) || []; 
+            leaderboard.push(entry);
+            leaderboard.sort((a, b) => b.funkiness - a.funkiness || a.name.localeCompare(b.name)); 
+            localStorage.setItem('ramenLeaderboardV3', JSON.stringify(leaderboard.slice(0,15))); 
+            loadLeaderboard();
+            console.log("Entry added to leaderboard.");
+        }
+
+        function loadLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('ramenLeaderboardV3') || '[]');
+            const listEl = document.getElementById('leaderboard-list');
+            if (leaderboard.length === 0) {
+                listEl.innerHTML = '<p style="color: #7f8c8d; text-align: center; padding:10px 0;">No entries yet!</p>'; return;
+            }
+            listEl.innerHTML = leaderboard.map((entry, index) => `
+                <div class="leaderboard-item">
+                    <div><span class="leaderboard-rank">#${index + 1}</span> <strong>${entry.name}</strong><br><small>"${entry.ramenName}"</small></div>
+                    <div><strong style="color: #e74c3c; font-size: 1.1em;">${entry.funkiness}%</strong><br><small>${entry.timestamp}</small></div>
+                </div>`).join('');
+        }
+
+        function clearSelection() {
+            document.querySelectorAll('.left-section input:checked').forEach(input => input.checked = false);
+            document.getElementById('guest-name').value = '';
+            currentSelection = { base: "", ingredients: [], guestName: "", funkiness: 0, ramenName: "" };
+            updateDisplay(); 
+        }
+
+        function prepareRecipeCardHTML() {
+            if (!currentSelection.guestName.trim() || (currentSelection.ingredients.length === 0 && !currentSelection.base)) {
+                console.error('Name and at least one ingredient required for export.'); return null;
+            }
+            const allIngredients = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
+            // Enhanced HTML for the recipe card
+            return `
+                <h1>🍜 DIY Ramen Recipe 🍜</h1>
+                <p class="guest-name-export">A Special Creation For: ${currentSelection.guestName}</p>
+                <h2>"${currentSelection.ramenName}"</h2>
+                <p class="funkiness-export">✨ Funkiness Level: ${currentSelection.funkiness}% ✨</p>
+                <h3 class="ingredients-title-export">Ingredients List:</h3>
+                <ul>${allIngredients.map(ing => {
+                    let isSpecialIng = false;
+                    for(const category in customIngredients){
+                        const found = customIngredients[category].find(i => i.value === ing && i.isSpecial);
+                        if(found) {
+                            isSpecialIng = true;
+                            break;
+                        }
+                    }
+                    return `<li>${ing}${isSpecialIng ? ' <span style="color: #e67e22; font-weight:bold;">(Special!)</span>' : ''}</li>`;
+                }).join('')}</ul>
+                <p class="footer-export">Enjoy your funky ramen! <br> Created with the DIY Korean Ramen Bar &trade;</p>`;
+        }
+
+        function exportRecipeAsImage() {
+            const recipeHTML = prepareRecipeCardHTML();
+            if (!recipeHTML) return;
+            const exportView = document.getElementById('recipe-card-export-view');
+            exportView.innerHTML = recipeHTML;
+            exportView.style.display = 'block'; // Make it visible for rendering
+            
+            // Add a small delay to ensure all styles and images (like emojis) are rendered
+            setTimeout(() => {
+                html2canvas(exportView, { 
+                    backgroundColor: null, // Use the element's background
+                    scale: 2, // Higher scale for better quality
+                    useCORS: true, // If you were using external images
+                    logging: false // Disable html2canvas logging in console
+                })
+                .then(canvas => {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = `${(currentSelection.guestName.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'my')}-funky-ramen.png`;
+                    link.click();
+                    exportView.style.display = 'none'; 
+                    exportView.innerHTML = ''; // Clear after use
+                    console.log("Recipe exported as image.");
+                }).catch(err => {
+                    console.error("Image export error:", err);
+                    exportView.style.display = 'none'; 
+                    exportView.innerHTML = '';
+                });
+            }, 200); // 200ms delay
+        }
+
+        function clearLeaderboard() {
+            localStorage.removeItem('ramenLeaderboardV3');
+            loadLeaderboard(); 
+            console.log("Leaderboard cleared.");
+        }
+
+        function exportLeaderboardData() { 
+            const data = localStorage.getItem('ramenLeaderboardV3');
+            if (!data || data === "[]") { console.warn("Leaderboard empty."); return; }
+            const blob = new Blob([data], { type: 'application/json;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `ramen_leaderboard_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url); 
+            console.log("Leaderboard data exported.");
+        }
+
+        function openIngredientManager() {
+            document.getElementById('ingredient-modal').style.display = 'flex'; 
+            document.getElementById('category-select').value = Object.keys(customIngredients)[0]; 
+            populateIngredientsInModal(); 
+        }
+
+        function closeIngredientManager() {
+            document.getElementById('ingredient-modal').style.display = 'none';
+        }
+
+        function populateIngredientsInModal() { 
+            const categoryId = document.getElementById('category-select').value;
+            const listContainer = document.getElementById('current-ingredients-list');
+            listContainer.innerHTML = ''; 
+            if (!customIngredients[categoryId]) customIngredients[categoryId] = []; 
+
+            customIngredients[categoryId].forEach((ingredient, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'ingredient-manager-item'; 
+                const nameSpecialGroup = document.createElement('div');
+                nameSpecialGroup.className = 'name-special-group';
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = ingredient.label;
+                const specialCheckbox = document.createElement('input');
+                specialCheckbox.type = 'checkbox';
+                specialCheckbox.id = `special-check-${ingredient.id || index}`; 
+                specialCheckbox.checked = ingredient.isSpecial || false;
+                specialCheckbox.title = "Mark as Special";
+                specialCheckbox.onchange = () => toggleIngredientSpecialStatus(categoryId, index, specialCheckbox.checked);
+                const specialLabel = document.createElement('label');
+                specialLabel.htmlFor = specialCheckbox.id;
+                specialLabel.textContent = "✨"; 
+                specialLabel.title = "Mark as Special";
+                nameSpecialGroup.appendChild(nameSpan);
+                nameSpecialGroup.appendChild(specialCheckbox);
+                nameSpecialGroup.appendChild(specialLabel);
+                const removeButton = document.createElement('button');
+                removeButton.innerHTML = '🗑️ <span class="sr-only">Remove</span>'; 
+                removeButton.title = `Remove ${ingredient.label}`; 
+                removeButton.onclick = () => removeIngredientFromManager(categoryId, index);
+                itemDiv.appendChild(nameSpecialGroup);
+                itemDiv.appendChild(removeButton);
+                listContainer.appendChild(itemDiv);
+            });
+             if (customIngredients[categoryId].length === 0) {
+                 listContainer.innerHTML = '<p style="color: #7f8c8d; text-align: center; padding: 10px 0;">No ingredients here yet.</p>';
+             }
+        }
+        
+        function toggleIngredientSpecialStatus(categoryId, ingredientIndex, isSpecial) {
+            customIngredients[categoryId][ingredientIndex].isSpecial = isSpecial;
+            localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
+            loadCustomIngredientsToPage(); 
+            console.log(`Ingredient "${customIngredients[categoryId][ingredientIndex].label}" special status set to ${isSpecial}`);
+        }
+
+        function removeIngredientFromManager(categoryId, index) {
+            const ingredientLabel = customIngredients[categoryId][index].label;
+            customIngredients[categoryId].splice(index, 1);
+            localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
+            populateIngredientsInModal(); 
+            loadCustomIngredientsToPage(); 
+            updateSelection(); 
+            console.log(`"${ingredientLabel}" removed.`);
+        }
+
+        function addIngredientFromModal() { 
+            const categoryId = document.getElementById('category-select').value;
+            const newIngredientInput = document.getElementById('new-ingredient-input');
+            const ingredientName = newIngredientInput.value.trim();
+            const isSpecial = document.getElementById('new-ingredient-special').checked;
+
+            if (!ingredientName) { console.error("Ingredient name required."); newIngredientInput.focus(); return; }
+            if (ingredientName.length > 50) { console.error("Name too long."); return; }
+            if (customIngredients[categoryId].some(ing => ing.label.toLowerCase() === ingredientName.toLowerCase())) {
+                console.warn("Ingredient already exists."); return;
+            }
+            
+            const ingredientId = createIdFromString(ingredientName, categoryId); 
+            const newIngredient = { value: ingredientName, label: ingredientName, id: ingredientId, isSpecial: isSpecial };
+
+            customIngredients[categoryId].push(newIngredient);
+            localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
+            populateIngredientsInModal(); 
+            loadCustomIngredientsToPage(); 
+            newIngredientInput.value = ''; 
+            document.getElementById('new-ingredient-special').checked = false; 
+            console.log(`"${ingredientName}" added.`);
+            newIngredientInput.focus();
+        }
+
+        function resetIngredientsToDefaults() { 
+            customIngredients = JSON.parse(JSON.stringify(defaultIngredients)); 
+            localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
+            populateIngredientsInModal(); 
+            loadCustomIngredientsToPage();    
+            clearSelection(); 
+            console.log("Ingredients reset to defaults.");
+        }
+        
+        const srOnlyStyle = `position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;`;
+        document.head.insertAdjacentHTML('beforeend', `<style>.sr-only{${srOnlyStyle}}</style>`);
+
+    </script>
+</body>
+</html>
