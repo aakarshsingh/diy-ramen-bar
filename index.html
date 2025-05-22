@@ -759,8 +759,7 @@
             base: "", ingredients: [], guestName: "", funkiness: 0, ramenName: ""
         };
         
-        // Variable to store the state of the ingredient being edited
-        let currentEditState = null; // Will be { categoryId, index, originalLabel }
+        let currentEditState = null; 
 
         const defaultIngredients = {
             "ramen-base": [
@@ -812,7 +811,6 @@
             loadLeaderboard();
             document.getElementById('guest-name').addEventListener('input', updateSelection);
             document.getElementById('category-select').addEventListener('change', () => {
-                // If user changes category while editing, cancel edit mode
                 if (currentEditState) {
                     resetEditMode();
                 }
@@ -891,8 +889,9 @@
             fusionCombos.forEach(combo => {
                 if (combo.every(item => allSelectedValues.includes(item))) score += 12; 
             });
-            const randomFactor = Math.floor(Math.random() * 7) - 3; 
-            score += randomFactor;
+            // Removed randomFactor
+            // const randomFactor = Math.floor(Math.random() * 7) - 3; 
+            // score += randomFactor;
             currentSelection.funkiness = Math.min(Math.max(0, score), 100); 
         }
 
@@ -1043,12 +1042,12 @@
         function openIngredientManager() {
             document.getElementById('ingredient-modal').style.display = 'flex'; 
             document.getElementById('category-select').value = Object.keys(customIngredients)[0]; 
-            resetEditMode(); // Ensure not in edit mode when opening
+            resetEditMode(); 
             populateIngredientsInModal(); 
         }
 
         function closeIngredientManager() {
-            resetEditMode(); // Clear edit state when closing modal
+            resetEditMode(); 
             document.getElementById('ingredient-modal').style.display = 'none';
         }
         
@@ -1068,7 +1067,7 @@
             document.getElementById('new-ingredient-special').checked = ingredientToEdit.isSpecial || false;
             document.getElementById('modal-add-update-button').textContent = 'Update Ingredient';
             document.getElementById('ingredient-input-label').textContent = 'Edit Ingredient:';
-            document.getElementById('new-ingredient-input').focus(); // Focus on input field
+            document.getElementById('new-ingredient-input').focus(); 
         }
 
         function populateIngredientsInModal() { 
@@ -1157,25 +1156,23 @@
                 return; 
             }
 
-            if (currentEditState) { // --- UPDATE LOGIC ---
+            if (currentEditState) { 
                 const { categoryId: editCategory, index: editIndex, originalLabel } = currentEditState;
-                // Check for duplicates only if the name has changed
                 if (ingredientName.toLowerCase() !== originalLabel.toLowerCase()) {
                     if (customIngredients[editCategory].some(ing => ing.label.toLowerCase() === ingredientName.toLowerCase())) {
                         console.warn(`Ingredient "${ingredientName}" already exists in this category.`);
                         return;
                     }
                 }
-                // Update the ingredient
                 customIngredients[editCategory][editIndex].label = ingredientName;
-                customIngredients[editCategory][editIndex].value = ingredientName; // Assuming value is same as label
+                customIngredients[editCategory][editIndex].value = ingredientName; 
                 customIngredients[editCategory][editIndex].isSpecial = isSpecial;
-                customIngredients[editCategory][editIndex].id = createIdFromString(ingredientName, editCategory); // Regenerate ID if name changes
+                customIngredients[editCategory][editIndex].id = createIdFromString(ingredientName, editCategory); 
 
                 console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
                 resetEditMode();
 
-            } else { // --- ADD LOGIC ---
+            } else { 
                 if (customIngredients[categoryId].some(ing => ing.label.toLowerCase() === ingredientName.toLowerCase())) {
                     console.warn(`Ingredient "${ingredientName}" already exists in this category.`);
                     return;
@@ -1190,7 +1187,6 @@
             populateIngredientsInModal(); 
             loadCustomIngredientsToPage(); 
             
-            // Clear inputs only if not in edit mode (or after successful edit and resetEditMode is called)
             if (!currentEditState) {
                 newIngredientInput.value = ''; 
                 document.getElementById('new-ingredient-special').checked = false; 
@@ -1202,7 +1198,7 @@
         function resetIngredientsToDefaults() { 
             customIngredients = JSON.parse(JSON.stringify(defaultIngredients)); 
             localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
-            resetEditMode(); // Clear any edit state
+            resetEditMode(); 
             populateIngredientsInModal(); 
             loadCustomIngredientsToPage();    
             clearSelection(); 
