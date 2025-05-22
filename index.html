@@ -106,6 +106,7 @@
             height: 20px;
             cursor: pointer;
             accent-color: #e74c3c;
+            flex-shrink: 0; /* Prevent checkbox from shrinking */
         }
 
         .ingredient-item label {
@@ -113,7 +114,14 @@
             font-weight: 500;
             color: #2c3e50;
             flex-grow: 1;
+            display: flex; /* For aligning emoji and text */
+            align-items: center;
         }
+        .ingredient-item .ingredient-emoji {
+            margin-right: 8px;
+            font-size: 1.2em; /* Adjust emoji size if needed */
+        }
+
 
         .right-section {
             position: sticky;
@@ -161,6 +169,7 @@
             background-color: #fff5f5;
             padding: 10px;
             border-radius: 8px;
+            line-height: 1.3; /* For multi-line names */
         }
 
         .funkiness-meter {
@@ -223,7 +232,14 @@
             border-radius: 15px;
             font-size: 0.9em;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex; /* For emoji alignment */
+            align-items: center;
         }
+        .selected-tag .ingredient-emoji {
+            margin-right: 5px;
+            font-size: 1em; /* Adjust emoji size in tags */
+        }
+
 
         .action-buttons {
             display: grid;
@@ -355,7 +371,6 @@
             background: #c0392b;
         }
 
-        /* Enhanced Styles for Recipe Card Export View */
         #recipe-card-export-view {
             display: none; 
             width: 420px; 
@@ -391,6 +406,7 @@
             margin-bottom: 12px; 
             font-style: normal; 
             color: #e67e22; 
+            line-height: 1.2; /* For potentially longer names */
         }
         #recipe-card-export-view .guest-name-export { 
             font-size: 1.1em; 
@@ -429,16 +445,16 @@
         #recipe-card-export-view li { 
             margin: 5px 0; 
             font-size: 0.95em; 
-            padding-left: 22px; 
+            padding-left: 0; /* Remove padding, emoji will be inline */
             position: relative; 
             line-height: 1.4; 
+            display: flex; /* For emoji alignment */
+            align-items: flex-start; /* Align items to the start for multi-line text */
         }
-        #recipe-card-export-view li::before {
-            content: '🍜'; 
-            position: absolute;
-            left: 0;
-            top: 0px; 
-            font-size: 0.9em; 
+        #recipe-card-export-view li .ingredient-emoji {
+            margin-right: 6px;
+            font-size: 0.9em; /* Consistent emoji size */
+            line-height: 1.4; /* Match text line-height */
         }
         #recipe-card-export-view .footer-export { 
             text-align:center; 
@@ -561,7 +577,7 @@
             font-weight: bold;
             transition: all 0.2s ease;
         }
-        #ingredient-modal #modal-add-update-button { /* Target the specific button */
+        #ingredient-modal #modal-add-update-button { 
              background: #27ae60; color: white; border: none;
         }
         #ingredient-modal #modal-add-update-button:hover {
@@ -593,17 +609,19 @@
             align-items: center;
             gap: 10px;
         }
+        #current-ingredients-list .ingredient-manager-item .name-special-group .ingredient-emoji {
+            font-size: 1.2em; /* Emoji size in modal list */
+        }
         #current-ingredients-list .ingredient-manager-item .name-special-group input[type="checkbox"] {
              width: auto; 
         }
         
-        /* Style for edit and remove buttons in modal list */
         #current-ingredients-list .ingredient-manager-item .action-btn-group button {
             background: transparent;
             border: none;
             color: #555;
             cursor: pointer;
-            font-size: 1.2em; /* Make icons a bit bigger */
+            font-size: 1.2em; 
             padding: 4px;
             margin-left: 5px;
         }
@@ -743,12 +761,23 @@
     <div id="recipe-card-export-view"></div>
 
     <script>
-        // Ramen names database
-        const ramenNames = [
-            "Seoul-ful Slurper", "Kimchi King Bowl", "Spicy Seoul Surprise", "Bulgogi Bomb", 
-            "K-Pop Noodle Drop", "Gangnam Style Soup", "Bibim-Boom Bowl", "Seoul Food Express",
-            "Ramen-tic Comedy", "Noodle Ninja Creation", "Slurp-tastic Special", "Bowl-dacious Beauty"
+        // --- RAMEN NAME GENERATION PARTS ---
+        const namePart1 = [
+            "Spicy", "Fiery", "Cheesy", "Funky", "Cosmic", "Ninja", "Samurai", "Dragon's", "Kimchi", "Seoul",
+            "K-Pop", "Electric", "Turbo", "Mega", "Ultra", "Golden", "Volcano", "Atomic", "Zen", "Mystic",
+            "Sizzling", "Groovy", "Galactic", "Dynamite", "Inferno", "Blazing", "Cheeky", "Wacky", "Zesty"
         ];
+        const namePart2 = [
+            "Noodle", "Ramen", "Bowl", "Slurp", "Broth", "Spice", "Delight", "Fusion", "Feast", "Kick",
+            "Surprise", "Blast", "Dream", "Attack", "Storm", "Wave", "Fury", "Elixir", "Potion", "Joy",
+            "Heat", "Chill", "Zing", "Crunch", "Munch"
+        ];
+        const namePart3 = [
+            "Supreme", "Extreme", "Deluxe", "Special", "X", "Plus", "Max", "Pro", "Overload", "Attack",
+            "Inferno", "Dynamo", "Fiesta", "Carnival", "Jubilee", "Legacy", "Legend", "Masterpiece", "Saga",
+            "Odyssey", "Vortex", "Galaxy", "Universe", "Infinity", "Royale"
+        ];
+
 
         const fusionCombos = [
             ["Paneer Cubes", "Maggi Magic Masala"], ["Crushed Papdi", "Kimchi Bowl"],
@@ -763,44 +792,44 @@
 
         const defaultIngredients = {
             "ramen-base": [
-                { value: "Shin Cup (Spicy)", label: "Shin Cup (Spicy)", id: "shin-cup-spicy", isSpecial: false },
-                { value: "Kimchi Bowl", label: "Kimchi Bowl", id: "kimchi-bowl", isSpecial: true },
-                { value: "Chapagetti", label: "Chapagetti", id: "chapagetti-noodles", isSpecial: false },
-                { value: "Neoguri", label: "Neoguri (Spicy Seafood)", id: "neoguri-spicy-seafood", isSpecial: false }
+                { value: "Shin Cup (Spicy)", label: "Shin Cup (Spicy)", id: "shin-cup-spicy", isSpecial: false, emoji: "🍜" },
+                { value: "Kimchi Bowl", label: "Kimchi Bowl", id: "kimchi-bowl", isSpecial: true, emoji: "🌶️" },
+                { value: "Chapagetti", label: "Chapagetti", id: "chapagetti-noodles", isSpecial: false, emoji: "🍝" },
+                { value: "Neoguri", label: "Neoguri (Spicy Seafood)", id: "neoguri-spicy-seafood", isSpecial: false, emoji: "🦑" }
             ],
             "proteins": [
-                { value: "Hard-boiled Eggs", label: "Hard-boiled Eggs", id: "hard-boiled-eggs", isSpecial: false },
-                { value: "Cubed Tofu", label: "Cubed Tofu", id: "cubed-tofu", isSpecial: false },
-                { value: "Paneer Cubes", label: "Paneer Cubes", id: "paneer-cubes", isSpecial: true },
-                { value: "Chicken Slivers", label: "Chicken Slivers (Cooked)", id: "chicken-slivers-cooked", isSpecial: false }
+                { value: "Hard-boiled Eggs", label: "Hard-boiled Eggs", id: "hard-boiled-eggs", isSpecial: false, emoji: "🥚" },
+                { value: "Cubed Tofu", label: "Cubed Tofu", id: "cubed-tofu", isSpecial: false, emoji: "⬜" },
+                { value: "Paneer Cubes", label: "Paneer Cubes", id: "paneer-cubes", isSpecial: true, emoji: "🧀" },
+                { value: "Chicken Slivers", label: "Chicken Slivers (Cooked)", id: "chicken-slivers-cooked", isSpecial: false, emoji: "🐔" }
             ],
             "vegetables": [
-                { value: "Sweet Corn", label: "Sweet Corn Kernels", id: "sweet-corn-kernels", isSpecial: false },
-                { value: "Spring Onions", label: "Spring Onions (Chopped)", id: "spring-onions-chopped", isSpecial: false },
-                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: true },
-                { value: "Shredded Cabbage", label: "Shredded Cabbage", id: "shredded-cabbage", isSpecial: false },
-                { value: "Bean Sprouts", label: "Bean Sprouts (Fresh)", id: "bean-sprouts-fresh", isSpecial: false },
-                { value: "Grated Carrots", label: "Grated Carrots", id: "grated-carrots", isSpecial: false },
-                { value: "Blanched Spinach", label: "Blanched Spinach", id: "blanched-spinach", isSpecial: false },
-                { value: "Green Chilies", label: "Green Chilies (Sliced)", id: "green-chilies-sliced", isSpecial: false },
-                { value: "Cherry Tomatoes", label: "Cherry Tomatoes (Halved)", id: "cherry-tomatoes-halved", isSpecial: false }
+                { value: "Sweet Corn", label: "Sweet Corn Kernels", id: "sweet-corn-kernels", isSpecial: false, emoji: "🌽" },
+                { value: "Spring Onions", label: "Spring Onions (Chopped)", id: "spring-onions-chopped", isSpecial: false, emoji: "🧅" },
+                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: true, emoji: "🍄" },
+                { value: "Shredded Cabbage", label: "Shredded Cabbage", id: "shredded-cabbage", isSpecial: false, emoji: "🥬" },
+                { value: "Bean Sprouts", label: "Bean Sprouts (Fresh)", id: "bean-sprouts-fresh", isSpecial: false, emoji: "🌱" },
+                { value: "Grated Carrots", label: "Grated Carrots", id: "grated-carrots", isSpecial: false, emoji: "🥕" },
+                { value: "Blanched Spinach", label: "Blanched Spinach", id: "blanched-spinach", isSpecial: false, emoji: "🍃" },
+                { value: "Green Chilies", label: "Green Chilies (Sliced)", id: "green-chilies-sliced", isSpecial: false, emoji: "🌶️" },
+                { value: "Cherry Tomatoes", label: "Cherry Tomatoes (Halved)", id: "cherry-tomatoes-halved", isSpecial: false, emoji: "🍅" }
             ],
             "crunchy": [
-                { value: "Fried Garlic", label: "Fried Garlic Flakes", id: "fried-garlic-flakes", isSpecial: true }, 
-                { value: "Sesame Seeds", label: "Toasted Sesame Seeds", id: "toasted-sesame-seeds", isSpecial: false },
-                { value: "Roasted Peanuts", label: "Roasted Peanuts (Crushed)", id: "roasted-peanuts-crushed", isSpecial: false },
-                { value: "Crushed Papdi", label: "Crushed Papdi/Crackers", id: "crushed-papdi-crackers", isSpecial: false },
-                { value: "Nori Flakes", label: "Nori (Seaweed) Flakes", id: "nori-seaweed-flakes", isSpecial: false }
+                { value: "Fried Garlic", label: "Fried Garlic Flakes", id: "fried-garlic-flakes", isSpecial: true, emoji: "🧄" }, 
+                { value: "Sesame Seeds", label: "Toasted Sesame Seeds", id: "toasted-sesame-seeds", isSpecial: false, emoji: "⚫" },
+                { value: "Roasted Peanuts", label: "Roasted Peanuts (Crushed)", id: "roasted-peanuts-crushed", isSpecial: false, emoji: "🥜" },
+                { value: "Crushed Papdi", label: "Crushed Papdi/Crackers", id: "crushed-papdi-crackers", isSpecial: false, emoji: "🍘" },
+                { value: "Nori Flakes", label: "Nori (Seaweed) Flakes", id: "nori-seaweed-flakes", isSpecial: false, emoji: "🌿" }
             ],
             "condiments": [
-                { value: "Soy Sauce", label: "Soy Sauce", id: "soy-sauce", isSpecial: false },
-                { value: "Chili Oil", label: "Chili Oil", id: "chili-oil-condiment", isSpecial: true }, 
-                { value: "Maggi Magic Masala", label: "Maggi Magic Masala", id: "maggi-magic-masala", isSpecial: true }, 
-                { value: "Sesame Oil", label: "Toasted Sesame Oil", id: "toasted-sesame-oil", isSpecial: false },
-                { value: "Sriracha", label: "Sriracha Hot Sauce", id: "sriracha-hot-sauce", isSpecial: false },
-                { value: "Mayonnaise", label: "Kewpie Mayonnaise", id: "kewpie-mayonnaise", isSpecial: false },
-                { value: "Lime Juice", label: "Fresh Lime Juice", id: "fresh-lime-juice", isSpecial: false },
-                { value: "Fish Sauce", label: "Fish Sauce (Optional)", id: "fish-sauce-optional", isSpecial: false }
+                { value: "Soy Sauce", label: "Soy Sauce", id: "soy-sauce", isSpecial: false, emoji: "💧" },
+                { value: "Chili Oil", label: "Chili Oil", id: "chili-oil-condiment", isSpecial: true, emoji: "🔥" }, 
+                { value: "Maggi Magic Masala", label: "Maggi Magic Masala", id: "maggi-magic-masala", isSpecial: true, emoji: "✨" }, 
+                { value: "Sesame Oil", label: "Toasted Sesame Oil", id: "toasted-sesame-oil", isSpecial: false, emoji: "💧" },
+                { value: "Sriracha", label: "Sriracha Hot Sauce", id: "sriracha-hot-sauce", isSpecial: false, emoji: "🌶️" },
+                { value: "Mayonnaise", label: "Kewpie Mayonnaise", id: "kewpie-mayonnaise", isSpecial: false, emoji: "🍦" }, // Closest emoji for mayo
+                { value: "Lime Juice", label: "Fresh Lime Juice", id: "fresh-lime-juice", isSpecial: false, emoji: "🍋" },
+                { value: "Fish Sauce", label: "Fish Sauce (Optional)", id: "fish-sauce-optional", isSpecial: false, emoji: "🐟" }
             ]
         };
 
@@ -832,15 +861,24 @@
                     if (!item.id) item.id = createIdFromString(item.label, categoryId); 
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'ingredient-item';
+                    
                     const input = document.createElement('input');
                     input.type = (categoryId === 'ramen-base') ? 'radio' : 'checkbox';
                     if (categoryId === 'ramen-base') input.name = 'base';
                     input.value = item.value;
                     input.id = item.id;
                     input.addEventListener('change', updateSelection); 
+                    
                     const label = document.createElement('label');
                     label.htmlFor = item.id;
-                    label.textContent = item.label;
+                    
+                    const emojiSpan = document.createElement('span');
+                    emojiSpan.className = 'ingredient-emoji';
+                    emojiSpan.textContent = item.emoji || '🍲'; // Default emoji if none provided
+                    
+                    label.appendChild(emojiSpan);
+                    label.appendChild(document.createTextNode(item.label)); // Add text node for label
+                    
                     if (item.isSpecial) { 
                         const specialMarker = document.createElement('span');
                         specialMarker.textContent = ' ✨'; 
@@ -889,9 +927,6 @@
             fusionCombos.forEach(combo => {
                 if (combo.every(item => allSelectedValues.includes(item))) score += 12; 
             });
-            // Removed randomFactor
-            // const randomFactor = Math.floor(Math.random() * 7) - 3; 
-            // score += randomFactor;
             currentSelection.funkiness = Math.min(Math.max(0, score), 100); 
         }
 
@@ -900,21 +935,24 @@
                 currentSelection.ramenName = "Pick ingredients to get your ramen name!";
                 return;
             }
-            let namePool = [...ramenNames]; 
-            if (currentSelection.funkiness > 80 || currentSelection.ingredients.some(ingValue => {
+            const p1 = namePart1[Math.floor(Math.random() * namePart1.length)];
+            const p2 = namePart2[Math.floor(Math.random() * namePart2.length)];
+            const p3 = namePart3[Math.floor(Math.random() * namePart3.length)];
+            
+            currentSelection.ramenName = `${p1} ${p2} ${p3}`;
+
+            // Add more dynamic names based on funkiness or special ingredients (optional enhancement)
+            if (currentSelection.funkiness > 85) {
+                 currentSelection.ramenName += " of the Gods!";
+            } else if (currentSelection.ingredients.some(ingValue => {
                 for (const category in customIngredients) {
                     const foundIng = customIngredients[category].find(ing => ing.value === ingValue);
                     if (foundIng && foundIng.isSpecial) return true;
                 }
                 return false;
             })) {
-                namePool.push("The Funkinator 3000", "Galaxy Brain Bowl", "Spicy Supernova Slurp");
+                 currentSelection.ramenName += " (Special Edition)";
             }
-            if (currentSelection.funkiness < 20 && currentSelection.ingredients.length > 0) {
-                namePool.push("The Humble Starter", "Simple Slurp Sensation", "Beginner's Bliss Bowl");
-            }
-            const randomIndex = Math.floor(Math.random() * namePool.length);
-            currentSelection.ramenName = namePool[randomIndex];
         }
 
         function updateDisplay() {
@@ -928,12 +966,24 @@
             else if (currentSelection.funkiness > 40) funkinessLevel = "Getting Funky! 👍";
             else if (currentSelection.funkiness > 15) funkinessLevel = "A Hint of Funk! 🤔";
             funkinessText.textContent = `${currentSelection.funkiness}% - ${funkinessLevel}`;
+            
             const selectedList = document.getElementById('selected-list');
-            const allSelected = [currentSelection.base, ...currentSelection.ingredients].filter(item => item); 
-            if (allSelected.length === 0) {
+            const allSelectedValues = [currentSelection.base, ...currentSelection.ingredients].filter(item => item); 
+            
+            if (allSelectedValues.length === 0) {
                 selectedList.innerHTML = '<span style="color: #7f8c8d; font-style: italic;">Nothing selected yet...</span>';
             } else {
-                selectedList.innerHTML = allSelected.map(item => `<span class="selected-tag">${item}</span>`).join('');
+                selectedList.innerHTML = allSelectedValues.map(value => {
+                    let emoji = '🍲'; // Default
+                    for (const category in customIngredients) {
+                        const found = customIngredients[category].find(ing => ing.value === value);
+                        if (found && found.emoji) {
+                            emoji = found.emoji;
+                            break;
+                        }
+                    }
+                    return `<span class="selected-tag"><span class="ingredient-emoji">${emoji}</span>${value}</span>`;
+                }).join('');
             }
         }
 
@@ -979,21 +1029,29 @@
             if (!currentSelection.guestName.trim() || (currentSelection.ingredients.length === 0 && !currentSelection.base)) {
                 console.error('Name and at least one ingredient required for export.'); return null;
             }
-            const allIngredients = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
+            const allIngredientsValues = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
+            
+            const ingredientsHTML = allIngredientsValues.map(ingValue => {
+                let emoji = '🍲'; // Default emoji
+                let isSpecialIng = false;
+                for(const category in customIngredients){
+                    const found = customIngredients[category].find(i => i.value === ingValue);
+                    if(found) {
+                        if(found.emoji) emoji = found.emoji;
+                        if(found.isSpecial) isSpecialIng = true;
+                        break;
+                    }
+                }
+                return `<li><span class="ingredient-emoji">${emoji}</span>${ingValue}${isSpecialIng ? ' <span style="color: #e67e22; font-weight:bold;">(Special!)</span>' : ''}</li>`;
+            }).join('');
+
             return `
                 <h1>🍜 DIY Ramen Recipe 🍜</h1>
                 <p class="guest-name-export">A Special Creation For: ${currentSelection.guestName}</p>
                 <h2>"${currentSelection.ramenName}"</h2>
                 <p class="funkiness-export">✨ Funkiness Level: ${currentSelection.funkiness}% ✨</p>
                 <h3 class="ingredients-title-export">Ingredients List:</h3>
-                <ul>${allIngredients.map(ing => {
-                    let isSpecialIng = false;
-                    for(const category in customIngredients){
-                        const found = customIngredients[category].find(i => i.value === ing && i.isSpecial);
-                        if(found) { isSpecialIng = true; break; }
-                    }
-                    return `<li>${ing}${isSpecialIng ? ' <span style="color: #e67e22; font-weight:bold;">(Special!)</span>' : ''}</li>`;
-                }).join('')}</ul>
+                <ul>${ingredientsHTML}</ul>
                 <p class="footer-export">Enjoy your funky ramen! <br> Created with the DIY Korean Ramen Bar &trade;</p>`;
         }
 
@@ -1082,18 +1140,27 @@
                 
                 const nameSpecialGroup = document.createElement('div');
                 nameSpecialGroup.className = 'name-special-group';
+                
+                const emojiSpan = document.createElement('span');
+                emojiSpan.className = 'ingredient-emoji';
+                emojiSpan.textContent = ingredient.emoji || '🍲';
+
                 const nameSpan = document.createElement('span');
                 nameSpan.textContent = ingredient.label;
+                
                 const specialCheckbox = document.createElement('input');
                 specialCheckbox.type = 'checkbox';
                 specialCheckbox.id = `special-check-${ingredient.id || index}`; 
                 specialCheckbox.checked = ingredient.isSpecial || false;
                 specialCheckbox.title = "Mark as Special";
                 specialCheckbox.onchange = () => toggleIngredientSpecialStatus(categoryId, index, specialCheckbox.checked);
+                
                 const specialLabel = document.createElement('label');
                 specialLabel.htmlFor = specialCheckbox.id;
                 specialLabel.textContent = "✨"; 
                 specialLabel.title = "Mark as Special";
+
+                nameSpecialGroup.appendChild(emojiSpan); // Add emoji first
                 nameSpecialGroup.appendChild(nameSpan);
                 nameSpecialGroup.appendChild(specialCheckbox);
                 nameSpecialGroup.appendChild(specialLabel);
@@ -1164,10 +1231,14 @@
                         return;
                     }
                 }
-                customIngredients[editCategory][editIndex].label = ingredientName;
-                customIngredients[editCategory][editIndex].value = ingredientName; 
-                customIngredients[editCategory][editIndex].isSpecial = isSpecial;
-                customIngredients[editCategory][editIndex].id = createIdFromString(ingredientName, editCategory); 
+                const originalIngredient = customIngredients[editCategory][editIndex];
+                originalIngredient.label = ingredientName;
+                originalIngredient.value = ingredientName; 
+                originalIngredient.isSpecial = isSpecial;
+                originalIngredient.id = createIdFromString(ingredientName, editCategory); 
+                // Keep original emoji if editing, or assign default if it was missing
+                originalIngredient.emoji = originalIngredient.emoji || '🍲';
+
 
                 console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
                 resetEditMode();
@@ -1178,7 +1249,13 @@
                     return;
                 }
                 const ingredientId = createIdFromString(ingredientName, categoryId); 
-                const newIngredient = { value: ingredientName, label: ingredientName, id: ingredientId, isSpecial: isSpecial };
+                const newIngredient = { 
+                    value: ingredientName, 
+                    label: ingredientName, 
+                    id: ingredientId, 
+                    isSpecial: isSpecial,
+                    emoji: '🍲' // Default emoji for new ingredients
+                };
                 customIngredients[categoryId].push(newIngredient);
                 console.log(`"${ingredientName}" added.`);
             }
