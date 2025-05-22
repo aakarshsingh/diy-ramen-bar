@@ -550,7 +550,7 @@
             font-weight: bold;
             color: #333;
         }
-        #ingredient-modal select {
+        #ingredient-modal select { /* General select styling */
             width: 100%;
             padding: 12px;
             border: 2px solid #e74c3c;
@@ -558,24 +558,30 @@
             font-size: 1em;
             margin-bottom: 10px; 
         }
-        #ingredient-modal .ingredient-input-group { /* New group for name and emoji */
+        #ingredient-modal .ingredient-input-group { 
             display: flex;
             gap: 10px;
-            align-items: flex-end; /* Align bottoms */
+            align-items: center; /* Vertically align items */
             margin-bottom: 10px;
         }
-        #ingredient-modal #new-ingredient-input {
-            flex-grow: 1; /* Name input takes more space */
-            margin-bottom: 0; /* Remove bottom margin from individual input */
+        #ingredient-modal #new-ingredient-input { /* Name input */
+            flex-grow: 1; 
+            padding: 12px;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 0; 
         }
-        #ingredient-modal #new-ingredient-emoji {
-            width: 70px; /* Fixed width for emoji input */
+        #ingredient-modal #new-ingredient-emoji { /* Emoji input */
+            width: 70px; 
             text-align: center;
-            font-size: 1.2em; /* Make emoji input slightly larger */
-            padding: 10px;
+            font-size: 1.2em; 
+            padding: 10px; /* Adjusted padding for better vertical alignment */
             margin-bottom: 0;
             border: 2px solid #e74c3c;
             border-radius: 8px;
+            height: 48px; /* Match typical height of other input with 12px padding */
+            line-height: 1; /* Adjust line height for emoji centering */
         }
 
 
@@ -637,6 +643,10 @@
              width: auto; 
         }
         
+        #current-ingredients-list .ingredient-manager-item .action-btn-group {
+            display: flex; /* Ensure buttons are in a row */
+            gap: 5px; /* Space between edit and remove buttons */
+        }
         #current-ingredients-list .ingredient-manager-item .action-btn-group button {
             background: transparent;
             border: none;
@@ -644,7 +654,7 @@
             cursor: pointer;
             font-size: 1.2em; 
             padding: 4px;
-            margin-left: 5px;
+            /* margin-left removed, using gap on parent */
         }
         #current-ingredients-list .ingredient-manager-item .action-btn-group button:hover {
             color: #e74c3c;
@@ -895,7 +905,7 @@
                     
                     const emojiSpan = document.createElement('span');
                     emojiSpan.className = 'ingredient-emoji';
-                    emojiSpan.textContent = item.emoji || '🍲'; 
+                    emojiSpan.textContent = item.emoji; // Directly use item.emoji, will be empty if ""
                     
                     label.appendChild(emojiSpan);
                     label.appendChild(document.createTextNode(item.label)); 
@@ -984,7 +994,7 @@
             if (currentSelection.funkiness > 85) funkinessLevel = "MAXIMUM FUNK! 🚀🔥";
             else if (currentSelection.funkiness > 65) funkinessLevel = "Seriously Funky! 😎✨";
             else if (currentSelection.funkiness > 40) funkinessLevel = "Getting Funky! 👍";
-            else if (currentSelection.funkiness > 15) funkinessLevel = "A Hint of Funk! 🤔";
+            else if (currentSelection.funkiness > 15) funkinessLevel = "A Hint of Funk! �";
             funkinessText.textContent = `${currentSelection.funkiness}% - ${funkinessLevel}`;
             
             const selectedList = document.getElementById('selected-list');
@@ -994,11 +1004,11 @@
                 selectedList.innerHTML = '<span style="color: #7f8c8d; font-style: italic;">Nothing selected yet...</span>';
             } else {
                 selectedList.innerHTML = allSelectedValues.map(value => {
-                    let emoji = '�'; 
+                    let emoji = ''; // Default to empty if not found or explicitly empty
                     for (const category in customIngredients) {
                         const found = customIngredients[category].find(ing => ing.value === value);
-                        if (found && found.emoji) {
-                            emoji = found.emoji;
+                        if (found) { // Check if found first
+                            emoji = found.emoji; // Use the emoji, which could be ""
                             break;
                         }
                     }
@@ -1052,12 +1062,12 @@
             const allIngredientsValues = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
             
             const ingredientsHTML = allIngredientsValues.map(ingValue => {
-                let emoji = '🍲'; 
+                let emoji = ''; 
                 let isSpecialIng = false;
                 for(const category in customIngredients){
                     const found = customIngredients[category].find(i => i.value === ingValue);
                     if(found) {
-                        if(found.emoji) emoji = found.emoji;
+                        emoji = found.emoji; // Use the emoji, could be ""
                         if(found.isSpecial) isSpecialIng = true;
                         break;
                     }
@@ -1132,7 +1142,7 @@
         function resetEditMode() {
             currentEditState = null;
             document.getElementById('new-ingredient-input').value = '';
-            document.getElementById('new-ingredient-emoji').value = ''; // Clear emoji input
+            document.getElementById('new-ingredient-emoji').value = ''; 
             document.getElementById('new-ingredient-special').checked = false;
             document.getElementById('modal-add-update-button').textContent = 'Add Ingredient';
             document.getElementById('ingredient-input-label').textContent = 'Add New Ingredient:';
@@ -1143,7 +1153,7 @@
             currentEditState = { categoryId, index, originalLabel: ingredientToEdit.label };
 
             document.getElementById('new-ingredient-input').value = ingredientToEdit.label;
-            document.getElementById('new-ingredient-emoji').value = ingredientToEdit.emoji || ''; // Populate emoji
+            document.getElementById('new-ingredient-emoji').value = ingredientToEdit.emoji || ''; 
             document.getElementById('new-ingredient-special').checked = ingredientToEdit.isSpecial || false;
             document.getElementById('modal-add-update-button').textContent = 'Update Ingredient';
             document.getElementById('ingredient-input-label').textContent = 'Edit Ingredient:';
@@ -1165,10 +1175,16 @@
                 
                 const emojiSpan = document.createElement('span');
                 emojiSpan.className = 'ingredient-emoji';
-                emojiSpan.textContent = ingredient.emoji || '🍲';
+                emojiSpan.textContent = ingredient.emoji; // Use directly, will be empty if ""
 
                 const nameSpan = document.createElement('span');
                 nameSpan.textContent = ingredient.label;
+                if (ingredient.isSpecial) { 
+                    const sparkle = document.createElement('span');
+                    sparkle.textContent = ' ✨'; 
+                    sparkle.title = "Special Ingredient";
+                    nameSpan.appendChild(sparkle); 
+                }
                 
                 const specialCheckbox = document.createElement('input');
                 specialCheckbox.type = 'checkbox';
@@ -1177,15 +1193,9 @@
                 specialCheckbox.title = "Mark as Special";
                 specialCheckbox.onchange = () => toggleIngredientSpecialStatus(categoryId, index, specialCheckbox.checked);
                 
-                const specialLabel = document.createElement('label');
-                specialLabel.htmlFor = specialCheckbox.id;
-                specialLabel.textContent = "✨"; 
-                specialLabel.title = "Mark as Special";
-
                 nameSpecialGroup.appendChild(emojiSpan); 
                 nameSpecialGroup.appendChild(nameSpan);
                 nameSpecialGroup.appendChild(specialCheckbox);
-                nameSpecialGroup.appendChild(specialLabel);
                 
                 const actionBtnGroup = document.createElement('div');
                 actionBtnGroup.className = 'action-btn-group';
@@ -1216,6 +1226,7 @@
             customIngredients[categoryId][ingredientIndex].isSpecial = isSpecial;
             localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
             loadCustomIngredientsToPage(); 
+            populateIngredientsInModal(); // Refresh modal list to show updated sparkle on name
             console.log(`Ingredient "${customIngredients[categoryId][ingredientIndex].label}" special status set to ${isSpecial}`);
         }
 
@@ -1259,7 +1270,7 @@
                 originalIngredient.value = ingredientName; 
                 originalIngredient.isSpecial = isSpecial;
                 originalIngredient.id = createIdFromString(ingredientName, editCategory); 
-                originalIngredient.emoji = ingredientEmoji || '🍲';
+                originalIngredient.emoji = ingredientEmoji; // Assign directly, "" if empty
 
 
                 console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
