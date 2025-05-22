@@ -550,7 +550,7 @@
             font-weight: bold;
             color: #333;
         }
-        #ingredient-modal select { /* General select styling */
+        #ingredient-modal select { 
             width: 100%;
             padding: 12px;
             border: 2px solid #e74c3c;
@@ -561,10 +561,10 @@
         #ingredient-modal .ingredient-input-group { 
             display: flex;
             gap: 10px;
-            align-items: center; /* Vertically align items */
+            align-items: center; 
             margin-bottom: 10px;
         }
-        #ingredient-modal #new-ingredient-input { /* Name input */
+        #ingredient-modal #new-ingredient-input { 
             flex-grow: 1; 
             padding: 12px;
             border: 2px solid #e74c3c;
@@ -572,16 +572,16 @@
             font-size: 1em;
             margin-bottom: 0; 
         }
-        #ingredient-modal #new-ingredient-emoji { /* Emoji input */
+        #ingredient-modal #new-ingredient-emoji { 
             width: 70px; 
             text-align: center;
             font-size: 1.2em; 
-            padding: 10px; /* Adjusted padding for better vertical alignment */
+            padding: 10px; 
             margin-bottom: 0;
             border: 2px solid #e74c3c;
             border-radius: 8px;
-            height: 48px; /* Match typical height of other input with 12px padding */
-            line-height: 1; /* Adjust line height for emoji centering */
+            height: 48px; 
+            line-height: 1; 
         }
 
 
@@ -644,8 +644,8 @@
         }
         
         #current-ingredients-list .ingredient-manager-item .action-btn-group {
-            display: flex; /* Ensure buttons are in a row */
-            gap: 5px; /* Space between edit and remove buttons */
+            display: flex; 
+            gap: 5px; 
         }
         #current-ingredients-list .ingredient-manager-item .action-btn-group button {
             background: transparent;
@@ -654,7 +654,6 @@
             cursor: pointer;
             font-size: 1.2em; 
             padding: 4px;
-            /* margin-left removed, using gap on parent */
         }
         #current-ingredients-list .ingredient-manager-item .action-btn-group button:hover {
             color: #e74c3c;
@@ -791,22 +790,16 @@
     <div id="recipe-card-export-view"></div>
 
     <script>
-        // --- RAMEN NAME GENERATION PARTS ---
-        const namePart1 = [
-            "Spicy", "Fiery", "Cheesy", "Funky", "Cosmic", "Ninja", "Samurai", "Dragon's", "Kimchi", "Seoul",
-            "K-Pop", "Electric", "Turbo", "Mega", "Ultra", "Golden", "Volcano", "Atomic", "Zen", "Mystic",
-            "Sizzling", "Groovy", "Galactic", "Dynamite", "Inferno", "Blazing", "Cheeky", "Wacky", "Zesty",
-            "Rockin'", "Ragin'", "Super", "Fantastic", "Amazing", "Incredible", "Ultimate", "Legendary"
-        ];
-        const namePart2 = [
-            "Noodle", "Ramen", "Bowl", "Slurp", "Broth", "Spice", "Delight", "Fusion", "Feast", "Kick",
-            "Surprise", "Blast", "Dream", "Attack", "Storm", "Wave", "Fury", "Elixir", "Potion", "Joy",
-            "Heat", "Chill", "Zing", "Crunch", "Munch", "Bomb", "Creation", "Master", "Wonder"
-        ];
-        const namePart3 = [
-            "Supreme", "Extreme", "Deluxe", "Special", "X", "Plus", "Max", "Pro", "Overload", "Attack",
-            "Inferno", "Dynamo", "Fiesta", "Carnival", "Jubilee", "Legacy", "Legend", "Masterpiece", "Saga",
-            "Odyssey", "Vortex", "Galaxy", "Universe", "Infinity", "Royale", "Reloaded", "Revolution", "Returns"
+        // Original Ramen Names (Korean Style)
+        const ramenNames = [
+            "Seoul-ful Slurper", "Kimchi King Bowl", "Spicy Seoul Surprise", "Bulgogi Bomb", 
+            "K-Pop Noodle Drop", "Gangnam Style Soup", "Bibim-Boom Bowl", "Seoul Food Express",
+            "Ramen-tic Comedy", "Noodle Ninja Creation", "Slurp-tastic Special", "Bowl-dacious Beauty",
+            "Chopstick Champion", "Umami Universe", "Flavor Fusion Frenzy", "Broth Brother Bowl",
+            "Spice is Right Ramen", "Noodle Nirvana", "Bowl-d and Beautiful", "Ramen-der Woman",
+            "Sir Slurps-a-Lot", "The Noodle Whisperer", "Bowl Patrol Special", "Ramyeon Rockstar",
+            "Topping Terror Bowl", "Fusion Confusion", "Seoul Kitchen Sink", "Midnight Munchie Mix",
+            "Professor Noodle's Lab", "Captain Korea Bowl", "The Spice Alchemist", "Noodle Storm Supreme"
         ];
 
 
@@ -905,7 +898,7 @@
                     
                     const emojiSpan = document.createElement('span');
                     emojiSpan.className = 'ingredient-emoji';
-                    emojiSpan.textContent = item.emoji; // Directly use item.emoji, will be empty if ""
+                    emojiSpan.textContent = item.emoji; 
                     
                     label.appendChild(emojiSpan);
                     label.appendChild(document.createTextNode(item.label)); 
@@ -930,7 +923,7 @@
             currentSelection.ingredients = Array.from(checkboxes).map(cb => cb.value);
             currentSelection.guestName = document.getElementById('guest-name').value;
             calculateFunkiness();
-            generateRamenName();
+            generateRamenName(); // Reverted to old style
             updateDisplay();
         }
 
@@ -946,44 +939,40 @@
                     if (ingredientObj) break;
                 }
                 if (ingredientObj) {
-                    score += 5; 
+                    score += 3; // Base points per ingredient (reduced)
                     if (ingredientObj.isSpecial) {
-                        score += 15; 
+                        score += 10; // Extra points for special ingredient (reduced)
                         specialIngredientCount++;
                     }
                 }
             });
-            if (specialIngredientCount >= 2) score += 10; 
-            if (specialIngredientCount >=3) score += 5 * (specialIngredientCount - 2); 
+            if (specialIngredientCount >= 2) score += 7; // Synergy bonus (reduced)
+            if (specialIngredientCount >=3) score += 3 * (specialIngredientCount - 2); // Additional bonus (reduced)
+            
             fusionCombos.forEach(combo => {
-                if (combo.every(item => allSelectedValues.includes(item))) score += 12; 
+                if (combo.every(item => allSelectedValues.includes(item))) score += 10; // Fusion bonus (reduced)
             });
             currentSelection.funkiness = Math.min(Math.max(0, score), 100); 
         }
 
-        function generateRamenName() {
+        function generateRamenName() { // Reverted to old style
             if (currentSelection.ingredients.length === 0 && !currentSelection.base) {
                 currentSelection.ramenName = "Pick ingredients to get your ramen name!";
                 return;
             }
-            const p1 = namePart1[Math.floor(Math.random() * namePart1.length)];
-            const p2 = namePart2[Math.floor(Math.random() * namePart2.length)];
-            const p3 = namePart3[Math.floor(Math.random() * namePart3.length)];
             
-            currentSelection.ramenName = `${p1} ${p2} ${p3}`;
-
-            if (currentSelection.funkiness > 85) {
-                 currentSelection.ramenName += " of the Gods!";
-            } else if (currentSelection.ingredients.some(ingValue => {
-                for (const category in customIngredients) {
-                    const foundIng = customIngredients[category].find(ing => ing.value === ingValue);
-                    if (foundIng && foundIng.isSpecial) return true;
-                }
-                return false;
-            })) {
-                 currentSelection.ramenName += " (Special Edition)";
+            let namePool = [...ramenNames]; // Use a copy of the original names
+            if (currentSelection.funkiness > 75) { 
+                namePool.push("The Funky Master's Special", "Chaos Bowl Supreme", "Fusion Explosion Deluxe");
             }
+             if (currentSelection.funkiness > 90) {
+                namePool.push("Ultimate Funklord Bowl", "Galaxy Brain Ramen", "Peak Funkiness Achieved");
+            }
+            
+            const randomIndex = Math.floor(Math.random() * namePool.length);
+            currentSelection.ramenName = namePool[randomIndex];
         }
+
 
         function updateDisplay() {
             document.getElementById('ramen-name').textContent = currentSelection.ramenName;
@@ -994,7 +983,7 @@
             if (currentSelection.funkiness > 85) funkinessLevel = "MAXIMUM FUNK! 🚀🔥";
             else if (currentSelection.funkiness > 65) funkinessLevel = "Seriously Funky! 😎✨";
             else if (currentSelection.funkiness > 40) funkinessLevel = "Getting Funky! 👍";
-            else if (currentSelection.funkiness > 15) funkinessLevel = "A Hint of Funk! �";
+            else if (currentSelection.funkiness > 15) funkinessLevel = "A Hint of Funk! 🤔";
             funkinessText.textContent = `${currentSelection.funkiness}% - ${funkinessLevel}`;
             
             const selectedList = document.getElementById('selected-list');
@@ -1004,11 +993,11 @@
                 selectedList.innerHTML = '<span style="color: #7f8c8d; font-style: italic;">Nothing selected yet...</span>';
             } else {
                 selectedList.innerHTML = allSelectedValues.map(value => {
-                    let emoji = ''; // Default to empty if not found or explicitly empty
+                    let emoji = ''; 
                     for (const category in customIngredients) {
                         const found = customIngredients[category].find(ing => ing.value === value);
-                        if (found) { // Check if found first
-                            emoji = found.emoji; // Use the emoji, which could be ""
+                        if (found) { 
+                            emoji = found.emoji; 
                             break;
                         }
                     }
@@ -1067,7 +1056,7 @@
                 for(const category in customIngredients){
                     const found = customIngredients[category].find(i => i.value === ingValue);
                     if(found) {
-                        emoji = found.emoji; // Use the emoji, could be ""
+                        emoji = found.emoji; 
                         if(found.isSpecial) isSpecialIng = true;
                         break;
                     }
@@ -1175,11 +1164,11 @@
                 
                 const emojiSpan = document.createElement('span');
                 emojiSpan.className = 'ingredient-emoji';
-                emojiSpan.textContent = ingredient.emoji; // Use directly, will be empty if ""
+                emojiSpan.textContent = ingredient.emoji; 
 
                 const nameSpan = document.createElement('span');
                 nameSpan.textContent = ingredient.label;
-                if (ingredient.isSpecial) { 
+                if (ingredient.isSpecial) { // Only add sparkle if actually special
                     const sparkle = document.createElement('span');
                     sparkle.textContent = ' ✨'; 
                     sparkle.title = "Special Ingredient";
@@ -1191,11 +1180,13 @@
                 specialCheckbox.id = `special-check-${ingredient.id || index}`; 
                 specialCheckbox.checked = ingredient.isSpecial || false;
                 specialCheckbox.title = "Mark as Special";
-                specialCheckbox.onchange = () => toggleIngredientSpecialStatus(categoryId, index, specialCheckbox.checked);
+                specialCheckbox.style.display = 'none'; // Hide this checkbox, use the one in nameSpecialGroup
+                // specialCheckbox.onchange = () => toggleIngredientSpecialStatus(categoryId, index, specialCheckbox.checked); // Handled by the visible one
                 
                 nameSpecialGroup.appendChild(emojiSpan); 
                 nameSpecialGroup.appendChild(nameSpan);
-                nameSpecialGroup.appendChild(specialCheckbox);
+                // The special checkbox is now part of the edit flow, not directly in the list item for toggling.
+                // It's controlled by the main edit form.
                 
                 const actionBtnGroup = document.createElement('div');
                 actionBtnGroup.className = 'action-btn-group';
@@ -1223,10 +1214,14 @@
         }
         
         function toggleIngredientSpecialStatus(categoryId, ingredientIndex, isSpecial) {
+            // This function is now primarily handled through the edit form's "special" checkbox.
+            // If direct toggling from list was desired, it would need a visible checkbox in populateIngredientsInModal
+            // and this function would be its onchange handler.
+            // For now, editing the special status happens via startEditIngredient and handleAddOrUpdateIngredient.
             customIngredients[categoryId][ingredientIndex].isSpecial = isSpecial;
             localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
             loadCustomIngredientsToPage(); 
-            populateIngredientsInModal(); // Refresh modal list to show updated sparkle on name
+            populateIngredientsInModal(); // Refresh to show changes if any (like sparkle on name)
             console.log(`Ingredient "${customIngredients[categoryId][ingredientIndex].label}" special status set to ${isSpecial}`);
         }
 
@@ -1244,7 +1239,8 @@
             const categoryId = document.getElementById('category-select').value;
             const newIngredientInput = document.getElementById('new-ingredient-input');
             const ingredientName = newIngredientInput.value.trim();
-            const ingredientEmoji = document.getElementById('new-ingredient-emoji').value.trim();
+            const ingredientEmojiInput = document.getElementById('new-ingredient-emoji');
+            let ingredientEmoji = ingredientEmojiInput.value.trim();
             const isSpecial = document.getElementById('new-ingredient-special').checked;
 
             if (!ingredientName) { 
@@ -1256,6 +1252,13 @@
                 console.error("Name too long."); 
                 return; 
             }
+             // Basic emoji validation (allow one or two characters, or empty)
+            if (ingredientEmoji.length > 2) {
+                console.error("Emoji should be 1 or 2 characters.");
+                ingredientEmojiInput.focus();
+                return;
+            }
+
 
             if (currentEditState) { 
                 const { categoryId: editCategory, index: editIndex, originalLabel } = currentEditState;
@@ -1270,7 +1273,7 @@
                 originalIngredient.value = ingredientName; 
                 originalIngredient.isSpecial = isSpecial;
                 originalIngredient.id = createIdFromString(ingredientName, editCategory); 
-                originalIngredient.emoji = ingredientEmoji; // Assign directly, "" if empty
+                originalIngredient.emoji = ingredientEmoji; // Assign directly, "" if empty. No default "🍲" on edit if cleared.
 
 
                 console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
@@ -1287,7 +1290,7 @@
                     label: ingredientName, 
                     id: ingredientId, 
                     isSpecial: isSpecial,
-                    emoji: ingredientEmoji || '🍲' 
+                    emoji: ingredientEmoji || '🍲' // Default "🍲" only for brand new if empty
                 };
                 customIngredients[categoryId].push(newIngredient);
                 console.log(`"${ingredientName}" added.`);
@@ -1297,9 +1300,9 @@
             populateIngredientsInModal(); 
             loadCustomIngredientsToPage(); 
             
-            if (!currentEditState) {
+            if (!currentEditState) { // Only clear if it was an "Add" operation
                 newIngredientInput.value = ''; 
-                document.getElementById('new-ingredient-emoji').value = '';
+                ingredientEmojiInput.value = '';
                 document.getElementById('new-ingredient-special').checked = false; 
                 newIngredientInput.focus();
             }
