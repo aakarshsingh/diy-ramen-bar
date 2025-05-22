@@ -369,8 +369,8 @@
             background-size: 20px 20px;
             border: 3px solid #e74c3c;
             border-radius: 15px;
-            font-family: Arial, Helvetica, sans-serif; /* Changed to clear sans-serif */
-            color: #333; /* Darker text for better contrast */
+            font-family: Arial, Helvetica, sans-serif; 
+            color: #333; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         #recipe-card-export-view h1, 
@@ -378,30 +378,29 @@
         #recipe-card-export-view h3 {
             color: #d35400; 
             text-align: center;
-            /* Using a more standard bold font stack */
             font-family: 'Arial Black', Gadget, sans-serif; 
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.05); /* Softer shadow */
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.05); 
         }
         #recipe-card-export-view h1 { 
-            font-size: 2em; /* Adjusted size */
+            font-size: 2em; 
             margin-bottom: 8px;
-            letter-spacing: 0.5px; /* Reduced letter spacing */
+            letter-spacing: 0.5px; 
         }
-        #recipe-card-export-view h2 { /* Ramen Name */
-            font-size: 1.5em; /* Adjusted size */
+        #recipe-card-export-view h2 { 
+            font-size: 1.5em; 
             margin-bottom: 12px; 
             font-style: normal; 
             color: #e67e22; 
         }
         #recipe-card-export-view .guest-name-export { 
-            font-size: 1.1em; /* Adjusted size */
+            font-size: 1.1em; 
             text-align:center; 
             margin-bottom: 18px; 
-            color: #555; /* Slightly darker */
+            color: #555; 
             font-style: italic;
         }
         #recipe-card-export-view .funkiness-export { 
-            font-size: 1.2em; /* Adjusted size */
+            font-size: 1.2em; 
             text-align:center; 
             margin-bottom:18px; 
             font-weight:bold;
@@ -411,13 +410,13 @@
             padding: 8px 0;
         }
         #recipe-card-export-view .ingredients-title-export {
-            font-size: 1.3em; /* Adjusted size */
+            font-size: 1.3em; 
             margin-top:20px; 
             margin-bottom:10px; 
             border-bottom: 2px solid #e74c3c; 
             padding-bottom: 6px;
             text-align: left; 
-            font-family: 'Arial Black', Gadget, sans-serif; /* Consistent with other titles */
+            font-family: 'Arial Black', Gadget, sans-serif; 
         }
         #recipe-card-export-view ul { 
             list-style-type: none; 
@@ -425,30 +424,30 @@
             margin-top: 8px;
             columns: 2; 
             gap: 15px;
-            font-family: Arial, Helvetica, sans-serif; /* Ensure body font */
+            font-family: Arial, Helvetica, sans-serif; 
         }
         #recipe-card-export-view li { 
-            margin: 5px 0; /* Adjusted margin */
-            font-size: 0.95em; /* Adjusted size */
+            margin: 5px 0; 
+            font-size: 0.95em; 
             padding-left: 22px; 
             position: relative; 
-            line-height: 1.4; /* Improved line spacing */
+            line-height: 1.4; 
         }
         #recipe-card-export-view li::before {
-            content: '🍜'; /* Changed to ramen emoji for theme */
+            content: '🍜'; 
             position: absolute;
             left: 0;
-            top: 0px; /* Fine-tuned vertical alignment */
-            font-size: 0.9em; /* Adjust emoji size if needed */
+            top: 0px; 
+            font-size: 0.9em; 
         }
         #recipe-card-export-view .footer-export { 
             text-align:center; 
             margin-top:25px; 
-            font-size:0.8em; /* Adjusted size */
-            color: #777; /* Slightly darker */
+            font-size:0.8em; 
+            color: #777; 
             border-top: 1px solid #ecf0f1;
             padding-top: 10px;
-            font-family: Arial, Helvetica, sans-serif; /* Ensure body font */
+            font-family: Arial, Helvetica, sans-serif; 
         }
 
 
@@ -562,10 +561,10 @@
             font-weight: bold;
             transition: all 0.2s ease;
         }
-        #ingredient-modal .modal-action-button { 
+        #ingredient-modal #modal-add-update-button { /* Target the specific button */
              background: #27ae60; color: white; border: none;
         }
-        #ingredient-modal .modal-action-button:hover {
+        #ingredient-modal #modal-add-update-button:hover {
             background: #229954;
         }
         #current-ingredients-list {
@@ -597,19 +596,22 @@
         #current-ingredients-list .ingredient-manager-item .name-special-group input[type="checkbox"] {
              width: auto; 
         }
-
-        #current-ingredients-list .ingredient-manager-item button { 
-            background: #e74c3c;
-            color: white;
+        
+        /* Style for edit and remove buttons in modal list */
+        #current-ingredients-list .ingredient-manager-item .action-btn-group button {
+            background: transparent;
             border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            flex-shrink: 0; 
+            color: #555;
+            cursor: pointer;
+            font-size: 1.2em; /* Make icons a bit bigger */
+            padding: 4px;
+            margin-left: 5px;
         }
-        #current-ingredients-list .ingredient-manager-item button:hover {
-            background: #c0392b;
+        #current-ingredients-list .ingredient-manager-item .action-btn-group button:hover {
+            color: #e74c3c;
         }
+
+
         .modal-button-group {
             text-align: center;
             gap: 10px;
@@ -717,10 +719,11 @@
                 </select>
             </div>
             <div style="margin-bottom: 20px;">
-                <label for="new-ingredient-input">Add New Ingredient:</label>
+                <label for="new-ingredient-input" id="ingredient-input-label">Add New Ingredient:</label>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="text" id="new-ingredient-input" placeholder="Enter ingredient name" style="flex-grow:1; margin-bottom:0;">
-                    <button onclick="addIngredientFromModal()" class="modal-action-button">Add</button> </div>
+                    <button onclick="handleAddOrUpdateIngredient()" id="modal-add-update-button" class="modal-action-button">Add Ingredient</button> 
+                </div>
                  <div class="ingredient-special-checkbox-container" style="margin-top:10px;">
                     <input type="checkbox" id="new-ingredient-special">
                     <label for="new-ingredient-special">Mark as Special Ingredient</label>
@@ -732,7 +735,8 @@
             </div>
             <div class="modal-button-group">
                 <button onclick="closeIngredientManager()">Close</button>
-                <button onclick="resetIngredientsToDefaults()" class="reset-btn">Reset All to Defaults</button> </div>
+                <button onclick="resetIngredientsToDefaults()" class="reset-btn">Reset All to Defaults</button> 
+            </div>
         </div>
     </div>
 
@@ -744,43 +748,38 @@
             "Seoul-ful Slurper", "Kimchi King Bowl", "Spicy Seoul Surprise", "Bulgogi Bomb", 
             "K-Pop Noodle Drop", "Gangnam Style Soup", "Bibim-Boom Bowl", "Seoul Food Express",
             "Ramen-tic Comedy", "Noodle Ninja Creation", "Slurp-tastic Special", "Bowl-dacious Beauty"
-            // ... more names
         ];
 
-        // Fusion combinations for extra funkiness
         const fusionCombos = [
             ["Paneer Cubes", "Maggi Magic Masala"], ["Crushed Papdi", "Kimchi Bowl"],
             ["Fish Sauce", "Grated Carrots"], ["Roasted Peanuts", "Chili Oil"]
-            // ... more combos
         ];
 
         let currentSelection = {
-            base: "",
-            ingredients: [],
-            guestName: "",
-            funkiness: 0,
-            ramenName: ""
+            base: "", ingredients: [], guestName: "", funkiness: 0, ramenName: ""
         };
+        
+        // Variable to store the state of the ingredient being edited
+        let currentEditState = null; // Will be { categoryId, index, originalLabel }
 
-        // Default ingredients configuration with isSpecial flag
         const defaultIngredients = {
             "ramen-base": [
                 { value: "Shin Cup (Spicy)", label: "Shin Cup (Spicy)", id: "shin-cup-spicy", isSpecial: false },
-                { value: "Kimchi Bowl", label: "Kimchi Bowl", id: "kimchi-bowl", isSpecial: true }, // Example special
+                { value: "Kimchi Bowl", label: "Kimchi Bowl", id: "kimchi-bowl", isSpecial: true },
                 { value: "Chapagetti", label: "Chapagetti", id: "chapagetti-noodles", isSpecial: false },
                 { value: "Neoguri", label: "Neoguri (Spicy Seafood)", id: "neoguri-spicy-seafood", isSpecial: false }
             ],
             "proteins": [
                 { value: "Hard-boiled Eggs", label: "Hard-boiled Eggs", id: "hard-boiled-eggs", isSpecial: false },
                 { value: "Cubed Tofu", label: "Cubed Tofu", id: "cubed-tofu", isSpecial: false },
-                { value: "Paneer Cubes", label: "Paneer Cubes", id: "paneer-cubes", isSpecial: true }, // Example special
+                { value: "Paneer Cubes", label: "Paneer Cubes", id: "paneer-cubes", isSpecial: true },
                 { value: "Chicken Slivers", label: "Chicken Slivers (Cooked)", id: "chicken-slivers-cooked", isSpecial: false }
             ],
             "vegetables": [
                 { value: "Sweet Corn", label: "Sweet Corn Kernels", id: "sweet-corn-kernels", isSpecial: false },
                 { value: "Spring Onions", label: "Spring Onions (Chopped)", id: "spring-onions-chopped", isSpecial: false },
-                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: true }, // Example special
-                 { value: "Shredded Cabbage", label: "Shredded Cabbage", id: "shredded-cabbage", isSpecial: false },
+                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: true },
+                { value: "Shredded Cabbage", label: "Shredded Cabbage", id: "shredded-cabbage", isSpecial: false },
                 { value: "Bean Sprouts", label: "Bean Sprouts (Fresh)", id: "bean-sprouts-fresh", isSpecial: false },
                 { value: "Grated Carrots", label: "Grated Carrots", id: "grated-carrots", isSpecial: false },
                 { value: "Blanched Spinach", label: "Blanched Spinach", id: "blanched-spinach", isSpecial: false },
@@ -812,7 +811,13 @@
             loadCustomIngredientsToPage(); 
             loadLeaderboard();
             document.getElementById('guest-name').addEventListener('input', updateSelection);
-            document.getElementById('category-select').addEventListener('change', populateIngredientsInModal); 
+            document.getElementById('category-select').addEventListener('change', () => {
+                // If user changes category while editing, cancel edit mode
+                if (currentEditState) {
+                    resetEditMode();
+                }
+                populateIngredientsInModal();
+            }); 
             updateDisplay();
         });
 
@@ -976,7 +981,6 @@
                 console.error('Name and at least one ingredient required for export.'); return null;
             }
             const allIngredients = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
-            // Enhanced HTML for the recipe card
             return `
                 <h1>🍜 DIY Ramen Recipe 🍜</h1>
                 <p class="guest-name-export">A Special Creation For: ${currentSelection.guestName}</p>
@@ -987,10 +991,7 @@
                     let isSpecialIng = false;
                     for(const category in customIngredients){
                         const found = customIngredients[category].find(i => i.value === ing && i.isSpecial);
-                        if(found) {
-                            isSpecialIng = true;
-                            break;
-                        }
+                        if(found) { isSpecialIng = true; break; }
                     }
                     return `<li>${ing}${isSpecialIng ? ' <span style="color: #e67e22; font-weight:bold;">(Special!)</span>' : ''}</li>`;
                 }).join('')}</ul>
@@ -1002,31 +1003,22 @@
             if (!recipeHTML) return;
             const exportView = document.getElementById('recipe-card-export-view');
             exportView.innerHTML = recipeHTML;
-            exportView.style.display = 'block'; // Make it visible for rendering
-            
-            // Add a small delay to ensure all styles and images (like emojis) are rendered
+            exportView.style.display = 'block'; 
             setTimeout(() => {
-                html2canvas(exportView, { 
-                    backgroundColor: null, // Use the element's background
-                    scale: 2, // Higher scale for better quality
-                    useCORS: true, // If you were using external images
-                    logging: false // Disable html2canvas logging in console
-                })
+                html2canvas(exportView, { backgroundColor: null, scale: 2, useCORS: true, logging: false })
                 .then(canvas => {
                     const image = canvas.toDataURL('image/png');
                     const link = document.createElement('a');
                     link.href = image;
                     link.download = `${(currentSelection.guestName.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'my')}-funky-ramen.png`;
                     link.click();
-                    exportView.style.display = 'none'; 
-                    exportView.innerHTML = ''; // Clear after use
+                    exportView.style.display = 'none'; exportView.innerHTML = '';
                     console.log("Recipe exported as image.");
                 }).catch(err => {
                     console.error("Image export error:", err);
-                    exportView.style.display = 'none'; 
-                    exportView.innerHTML = '';
+                    exportView.style.display = 'none'; exportView.innerHTML = '';
                 });
-            }, 200); // 200ms delay
+            }, 200); 
         }
 
         function clearLeaderboard() {
@@ -1051,11 +1043,32 @@
         function openIngredientManager() {
             document.getElementById('ingredient-modal').style.display = 'flex'; 
             document.getElementById('category-select').value = Object.keys(customIngredients)[0]; 
+            resetEditMode(); // Ensure not in edit mode when opening
             populateIngredientsInModal(); 
         }
 
         function closeIngredientManager() {
+            resetEditMode(); // Clear edit state when closing modal
             document.getElementById('ingredient-modal').style.display = 'none';
+        }
+        
+        function resetEditMode() {
+            currentEditState = null;
+            document.getElementById('new-ingredient-input').value = '';
+            document.getElementById('new-ingredient-special').checked = false;
+            document.getElementById('modal-add-update-button').textContent = 'Add Ingredient';
+            document.getElementById('ingredient-input-label').textContent = 'Add New Ingredient:';
+        }
+
+        function startEditIngredient(categoryId, index) {
+            const ingredientToEdit = customIngredients[categoryId][index];
+            currentEditState = { categoryId, index, originalLabel: ingredientToEdit.label };
+
+            document.getElementById('new-ingredient-input').value = ingredientToEdit.label;
+            document.getElementById('new-ingredient-special').checked = ingredientToEdit.isSpecial || false;
+            document.getElementById('modal-add-update-button').textContent = 'Update Ingredient';
+            document.getElementById('ingredient-input-label').textContent = 'Edit Ingredient:';
+            document.getElementById('new-ingredient-input').focus(); // Focus on input field
         }
 
         function populateIngredientsInModal() { 
@@ -1067,6 +1080,7 @@
             customIngredients[categoryId].forEach((ingredient, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'ingredient-manager-item'; 
+                
                 const nameSpecialGroup = document.createElement('div');
                 nameSpecialGroup.className = 'name-special-group';
                 const nameSpan = document.createElement('span');
@@ -1084,12 +1098,25 @@
                 nameSpecialGroup.appendChild(nameSpan);
                 nameSpecialGroup.appendChild(specialCheckbox);
                 nameSpecialGroup.appendChild(specialLabel);
+                
+                const actionBtnGroup = document.createElement('div');
+                actionBtnGroup.className = 'action-btn-group';
+
+                const editButton = document.createElement('button');
+                editButton.innerHTML = '✏️ <span class="sr-only">Edit</span>';
+                editButton.title = `Edit ${ingredient.label}`;
+                editButton.onclick = () => startEditIngredient(categoryId, index);
+
                 const removeButton = document.createElement('button');
                 removeButton.innerHTML = '🗑️ <span class="sr-only">Remove</span>'; 
                 removeButton.title = `Remove ${ingredient.label}`; 
                 removeButton.onclick = () => removeIngredientFromManager(categoryId, index);
+
+                actionBtnGroup.appendChild(editButton);
+                actionBtnGroup.appendChild(removeButton);
+                
                 itemDiv.appendChild(nameSpecialGroup);
-                itemDiv.appendChild(removeButton);
+                itemDiv.appendChild(actionBtnGroup);
                 listContainer.appendChild(itemDiv);
             });
              if (customIngredients[categoryId].length === 0) {
@@ -1114,34 +1141,68 @@
             console.log(`"${ingredientLabel}" removed.`);
         }
 
-        function addIngredientFromModal() { 
+        function handleAddOrUpdateIngredient() {
             const categoryId = document.getElementById('category-select').value;
             const newIngredientInput = document.getElementById('new-ingredient-input');
             const ingredientName = newIngredientInput.value.trim();
             const isSpecial = document.getElementById('new-ingredient-special').checked;
 
-            if (!ingredientName) { console.error("Ingredient name required."); newIngredientInput.focus(); return; }
-            if (ingredientName.length > 50) { console.error("Name too long."); return; }
-            if (customIngredients[categoryId].some(ing => ing.label.toLowerCase() === ingredientName.toLowerCase())) {
-                console.warn("Ingredient already exists."); return;
+            if (!ingredientName) { 
+                console.error("Ingredient name required."); 
+                newIngredientInput.focus(); 
+                return; 
             }
-            
-            const ingredientId = createIdFromString(ingredientName, categoryId); 
-            const newIngredient = { value: ingredientName, label: ingredientName, id: ingredientId, isSpecial: isSpecial };
+            if (ingredientName.length > 50) { 
+                console.error("Name too long."); 
+                return; 
+            }
 
-            customIngredients[categoryId].push(newIngredient);
+            if (currentEditState) { // --- UPDATE LOGIC ---
+                const { categoryId: editCategory, index: editIndex, originalLabel } = currentEditState;
+                // Check for duplicates only if the name has changed
+                if (ingredientName.toLowerCase() !== originalLabel.toLowerCase()) {
+                    if (customIngredients[editCategory].some(ing => ing.label.toLowerCase() === ingredientName.toLowerCase())) {
+                        console.warn(`Ingredient "${ingredientName}" already exists in this category.`);
+                        return;
+                    }
+                }
+                // Update the ingredient
+                customIngredients[editCategory][editIndex].label = ingredientName;
+                customIngredients[editCategory][editIndex].value = ingredientName; // Assuming value is same as label
+                customIngredients[editCategory][editIndex].isSpecial = isSpecial;
+                customIngredients[editCategory][editIndex].id = createIdFromString(ingredientName, editCategory); // Regenerate ID if name changes
+
+                console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
+                resetEditMode();
+
+            } else { // --- ADD LOGIC ---
+                if (customIngredients[categoryId].some(ing => ing.label.toLowerCase() === ingredientName.toLowerCase())) {
+                    console.warn(`Ingredient "${ingredientName}" already exists in this category.`);
+                    return;
+                }
+                const ingredientId = createIdFromString(ingredientName, categoryId); 
+                const newIngredient = { value: ingredientName, label: ingredientName, id: ingredientId, isSpecial: isSpecial };
+                customIngredients[categoryId].push(newIngredient);
+                console.log(`"${ingredientName}" added.`);
+            }
+
             localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
             populateIngredientsInModal(); 
             loadCustomIngredientsToPage(); 
-            newIngredientInput.value = ''; 
-            document.getElementById('new-ingredient-special').checked = false; 
-            console.log(`"${ingredientName}" added.`);
-            newIngredientInput.focus();
+            
+            // Clear inputs only if not in edit mode (or after successful edit and resetEditMode is called)
+            if (!currentEditState) {
+                newIngredientInput.value = ''; 
+                document.getElementById('new-ingredient-special').checked = false; 
+                newIngredientInput.focus();
+            }
         }
+
 
         function resetIngredientsToDefaults() { 
             customIngredients = JSON.parse(JSON.stringify(defaultIngredients)); 
             localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
+            resetEditMode(); // Clear any edit state
             populateIngredientsInModal(); 
             loadCustomIngredientsToPage();    
             clearSelection(); 
@@ -1150,6 +1211,7 @@
         
         const srOnlyStyle = `position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;`;
         document.head.insertAdjacentHTML('beforeend', `<style>.sr-only{${srOnlyStyle}}</style>`);
+
     </script>
 </body>
 </html>
