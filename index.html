@@ -106,7 +106,7 @@
             height: 20px;
             cursor: pointer;
             accent-color: #e74c3c;
-            flex-shrink: 0; /* Prevent checkbox from shrinking */
+            flex-shrink: 0; 
         }
 
         .ingredient-item label {
@@ -114,12 +114,12 @@
             font-weight: 500;
             color: #2c3e50;
             flex-grow: 1;
-            display: flex; /* For aligning emoji and text */
+            display: flex; 
             align-items: center;
         }
         .ingredient-item .ingredient-emoji {
             margin-right: 8px;
-            font-size: 1.2em; /* Adjust emoji size if needed */
+            font-size: 1.2em; 
         }
 
 
@@ -169,7 +169,7 @@
             background-color: #fff5f5;
             padding: 10px;
             border-radius: 8px;
-            line-height: 1.3; /* For multi-line names */
+            line-height: 1.3; 
         }
 
         .funkiness-meter {
@@ -232,12 +232,12 @@
             border-radius: 15px;
             font-size: 0.9em;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex; /* For emoji alignment */
+            display: flex; 
             align-items: center;
         }
         .selected-tag .ingredient-emoji {
             margin-right: 5px;
-            font-size: 1em; /* Adjust emoji size in tags */
+            font-size: 1em; 
         }
 
 
@@ -406,7 +406,7 @@
             margin-bottom: 12px; 
             font-style: normal; 
             color: #e67e22; 
-            line-height: 1.2; /* For potentially longer names */
+            line-height: 1.2; 
         }
         #recipe-card-export-view .guest-name-export { 
             font-size: 1.1em; 
@@ -445,16 +445,16 @@
         #recipe-card-export-view li { 
             margin: 5px 0; 
             font-size: 0.95em; 
-            padding-left: 0; /* Remove padding, emoji will be inline */
+            padding-left: 0; 
             position: relative; 
             line-height: 1.4; 
-            display: flex; /* For emoji alignment */
-            align-items: flex-start; /* Align items to the start for multi-line text */
+            display: flex; 
+            align-items: flex-start; 
         }
         #recipe-card-export-view li .ingredient-emoji {
             margin-right: 6px;
-            font-size: 0.9em; /* Consistent emoji size */
-            line-height: 1.4; /* Match text line-height */
+            font-size: 0.9em; 
+            line-height: 1.4; 
         }
         #recipe-card-export-view .footer-export { 
             text-align:center; 
@@ -550,7 +550,7 @@
             font-weight: bold;
             color: #333;
         }
-        #ingredient-modal select, #ingredient-modal input[type="text"] {
+        #ingredient-modal select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e74c3c;
@@ -558,6 +558,27 @@
             font-size: 1em;
             margin-bottom: 10px; 
         }
+        #ingredient-modal .ingredient-input-group { /* New group for name and emoji */
+            display: flex;
+            gap: 10px;
+            align-items: flex-end; /* Align bottoms */
+            margin-bottom: 10px;
+        }
+        #ingredient-modal #new-ingredient-input {
+            flex-grow: 1; /* Name input takes more space */
+            margin-bottom: 0; /* Remove bottom margin from individual input */
+        }
+        #ingredient-modal #new-ingredient-emoji {
+            width: 70px; /* Fixed width for emoji input */
+            text-align: center;
+            font-size: 1.2em; /* Make emoji input slightly larger */
+            padding: 10px;
+            margin-bottom: 0;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+        }
+
+
         #ingredient-modal .ingredient-special-checkbox-container {
             display: flex;
             align-items: center;
@@ -610,7 +631,7 @@
             gap: 10px;
         }
         #current-ingredients-list .ingredient-manager-item .name-special-group .ingredient-emoji {
-            font-size: 1.2em; /* Emoji size in modal list */
+            font-size: 1.2em; 
         }
         #current-ingredients-list .ingredient-manager-item .name-special-group input[type="checkbox"] {
              width: auto; 
@@ -736,17 +757,16 @@
                     <option value="condiments">🧂 Condiments</option>
                 </select>
             </div>
-            <div style="margin-bottom: 20px;">
-                <label for="new-ingredient-input" id="ingredient-input-label">Add New Ingredient:</label>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="new-ingredient-input" placeholder="Enter ingredient name" style="flex-grow:1; margin-bottom:0;">
-                    <button onclick="handleAddOrUpdateIngredient()" id="modal-add-update-button" class="modal-action-button">Add Ingredient</button> 
-                </div>
-                 <div class="ingredient-special-checkbox-container" style="margin-top:10px;">
-                    <input type="checkbox" id="new-ingredient-special">
-                    <label for="new-ingredient-special">Mark as Special Ingredient</label>
+            <div style="margin-bottom: 10px;"> <label for="new-ingredient-input" id="ingredient-input-label">Add New Ingredient:</label>
+                <div class="ingredient-input-group"> <input type="text" id="new-ingredient-input" placeholder="Ingredient Name">
+                    <input type="text" id="new-ingredient-emoji" placeholder="🍜" maxlength="2"> 
                 </div>
             </div>
+            <div class="ingredient-special-checkbox-container" style="margin-top:0; margin-bottom: 20px;"> <input type="checkbox" id="new-ingredient-special">
+                <label for="new-ingredient-special" style="font-weight:normal; margin-bottom:0;">Mark as Special Ingredient</label> </div>
+            <div style="text-align: center; margin-bottom:20px;"> <button onclick="handleAddOrUpdateIngredient()" id="modal-add-update-button">Add Ingredient</button> 
+            </div>
+
             <div style="margin-bottom: 20px;">
                 <label>Current Ingredients in Selected Category:</label>
                 <div id="current-ingredients-list"></div>
@@ -765,17 +785,18 @@
         const namePart1 = [
             "Spicy", "Fiery", "Cheesy", "Funky", "Cosmic", "Ninja", "Samurai", "Dragon's", "Kimchi", "Seoul",
             "K-Pop", "Electric", "Turbo", "Mega", "Ultra", "Golden", "Volcano", "Atomic", "Zen", "Mystic",
-            "Sizzling", "Groovy", "Galactic", "Dynamite", "Inferno", "Blazing", "Cheeky", "Wacky", "Zesty"
+            "Sizzling", "Groovy", "Galactic", "Dynamite", "Inferno", "Blazing", "Cheeky", "Wacky", "Zesty",
+            "Rockin'", "Ragin'", "Super", "Fantastic", "Amazing", "Incredible", "Ultimate", "Legendary"
         ];
         const namePart2 = [
             "Noodle", "Ramen", "Bowl", "Slurp", "Broth", "Spice", "Delight", "Fusion", "Feast", "Kick",
             "Surprise", "Blast", "Dream", "Attack", "Storm", "Wave", "Fury", "Elixir", "Potion", "Joy",
-            "Heat", "Chill", "Zing", "Crunch", "Munch"
+            "Heat", "Chill", "Zing", "Crunch", "Munch", "Bomb", "Creation", "Master", "Wonder"
         ];
         const namePart3 = [
             "Supreme", "Extreme", "Deluxe", "Special", "X", "Plus", "Max", "Pro", "Overload", "Attack",
             "Inferno", "Dynamo", "Fiesta", "Carnival", "Jubilee", "Legacy", "Legend", "Masterpiece", "Saga",
-            "Odyssey", "Vortex", "Galaxy", "Universe", "Infinity", "Royale"
+            "Odyssey", "Vortex", "Galaxy", "Universe", "Infinity", "Royale", "Reloaded", "Revolution", "Returns"
         ];
 
 
@@ -827,7 +848,7 @@
                 { value: "Maggi Magic Masala", label: "Maggi Magic Masala", id: "maggi-magic-masala", isSpecial: true, emoji: "✨" }, 
                 { value: "Sesame Oil", label: "Toasted Sesame Oil", id: "toasted-sesame-oil", isSpecial: false, emoji: "💧" },
                 { value: "Sriracha", label: "Sriracha Hot Sauce", id: "sriracha-hot-sauce", isSpecial: false, emoji: "🌶️" },
-                { value: "Mayonnaise", label: "Kewpie Mayonnaise", id: "kewpie-mayonnaise", isSpecial: false, emoji: "🍦" }, // Closest emoji for mayo
+                { value: "Mayonnaise", label: "Kewpie Mayonnaise", id: "kewpie-mayonnaise", isSpecial: false, emoji: "🍦" }, 
                 { value: "Lime Juice", label: "Fresh Lime Juice", id: "fresh-lime-juice", isSpecial: false, emoji: "🍋" },
                 { value: "Fish Sauce", label: "Fish Sauce (Optional)", id: "fish-sauce-optional", isSpecial: false, emoji: "🐟" }
             ]
@@ -874,10 +895,10 @@
                     
                     const emojiSpan = document.createElement('span');
                     emojiSpan.className = 'ingredient-emoji';
-                    emojiSpan.textContent = item.emoji || '🍲'; // Default emoji if none provided
+                    emojiSpan.textContent = item.emoji || '🍲'; 
                     
                     label.appendChild(emojiSpan);
-                    label.appendChild(document.createTextNode(item.label)); // Add text node for label
+                    label.appendChild(document.createTextNode(item.label)); 
                     
                     if (item.isSpecial) { 
                         const specialMarker = document.createElement('span');
@@ -941,7 +962,6 @@
             
             currentSelection.ramenName = `${p1} ${p2} ${p3}`;
 
-            // Add more dynamic names based on funkiness or special ingredients (optional enhancement)
             if (currentSelection.funkiness > 85) {
                  currentSelection.ramenName += " of the Gods!";
             } else if (currentSelection.ingredients.some(ingValue => {
@@ -974,7 +994,7 @@
                 selectedList.innerHTML = '<span style="color: #7f8c8d; font-style: italic;">Nothing selected yet...</span>';
             } else {
                 selectedList.innerHTML = allSelectedValues.map(value => {
-                    let emoji = '🍲'; // Default
+                    let emoji = '�'; 
                     for (const category in customIngredients) {
                         const found = customIngredients[category].find(ing => ing.value === value);
                         if (found && found.emoji) {
@@ -1032,7 +1052,7 @@
             const allIngredientsValues = [currentSelection.base, ...currentSelection.ingredients].filter(Boolean);
             
             const ingredientsHTML = allIngredientsValues.map(ingValue => {
-                let emoji = '🍲'; // Default emoji
+                let emoji = '🍲'; 
                 let isSpecialIng = false;
                 for(const category in customIngredients){
                     const found = customIngredients[category].find(i => i.value === ingValue);
@@ -1112,6 +1132,7 @@
         function resetEditMode() {
             currentEditState = null;
             document.getElementById('new-ingredient-input').value = '';
+            document.getElementById('new-ingredient-emoji').value = ''; // Clear emoji input
             document.getElementById('new-ingredient-special').checked = false;
             document.getElementById('modal-add-update-button').textContent = 'Add Ingredient';
             document.getElementById('ingredient-input-label').textContent = 'Add New Ingredient:';
@@ -1122,6 +1143,7 @@
             currentEditState = { categoryId, index, originalLabel: ingredientToEdit.label };
 
             document.getElementById('new-ingredient-input').value = ingredientToEdit.label;
+            document.getElementById('new-ingredient-emoji').value = ingredientToEdit.emoji || ''; // Populate emoji
             document.getElementById('new-ingredient-special').checked = ingredientToEdit.isSpecial || false;
             document.getElementById('modal-add-update-button').textContent = 'Update Ingredient';
             document.getElementById('ingredient-input-label').textContent = 'Edit Ingredient:';
@@ -1160,7 +1182,7 @@
                 specialLabel.textContent = "✨"; 
                 specialLabel.title = "Mark as Special";
 
-                nameSpecialGroup.appendChild(emojiSpan); // Add emoji first
+                nameSpecialGroup.appendChild(emojiSpan); 
                 nameSpecialGroup.appendChild(nameSpan);
                 nameSpecialGroup.appendChild(specialCheckbox);
                 nameSpecialGroup.appendChild(specialLabel);
@@ -1211,6 +1233,7 @@
             const categoryId = document.getElementById('category-select').value;
             const newIngredientInput = document.getElementById('new-ingredient-input');
             const ingredientName = newIngredientInput.value.trim();
+            const ingredientEmoji = document.getElementById('new-ingredient-emoji').value.trim();
             const isSpecial = document.getElementById('new-ingredient-special').checked;
 
             if (!ingredientName) { 
@@ -1236,8 +1259,7 @@
                 originalIngredient.value = ingredientName; 
                 originalIngredient.isSpecial = isSpecial;
                 originalIngredient.id = createIdFromString(ingredientName, editCategory); 
-                // Keep original emoji if editing, or assign default if it was missing
-                originalIngredient.emoji = originalIngredient.emoji || '🍲';
+                originalIngredient.emoji = ingredientEmoji || '🍲';
 
 
                 console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
@@ -1254,7 +1276,7 @@
                     label: ingredientName, 
                     id: ingredientId, 
                     isSpecial: isSpecial,
-                    emoji: '🍲' // Default emoji for new ingredients
+                    emoji: ingredientEmoji || '🍲' 
                 };
                 customIngredients[categoryId].push(newIngredient);
                 console.log(`"${ingredientName}" added.`);
@@ -1266,6 +1288,7 @@
             
             if (!currentEditState) {
                 newIngredientInput.value = ''; 
+                document.getElementById('new-ingredient-emoji').value = '';
                 document.getElementById('new-ingredient-special').checked = false; 
                 newIngredientInput.focus();
             }
