@@ -701,9 +701,7 @@
                     <div class="ingredients-grid" id="vegetables"></div>
                 </div>
                 <div class="section">
-                    <h3>🍘 Crunchy Toppings</h3>
-                    <div class="ingredients-grid" id="crunchy"></div>
-                </div>
+                    <h3>💥 Crunch</h3> <div class="ingredients-grid" id="crunch"></div> </div>
                 <div class="section">
                     <h3>🧂 Condiments</h3>
                     <div class="ingredients-grid" id="condiments"></div>
@@ -762,8 +760,7 @@
                     <option value="ramen-base">🍲 Ramen Base</option>
                     <option value="proteins">🥚 Proteins</option>
                     <option value="vegetables">🥬 Vegetables</option>
-                    <option value="crunchy">🍘 Crunchy Toppings</option>
-                    <option value="condiments">🧂 Condiments</option>
+                    <option value="crunch">💥 Crunch</option> <option value="condiments">🧂 Condiments</option>
                 </select>
             </div>
             <div style="margin-bottom: 10px;"> <label for="new-ingredient-input" id="ingredient-input-label">Add New Ingredient:</label>
@@ -790,8 +787,7 @@
     <div id="recipe-card-export-view"></div>
 
     <script>
-        // Original Ramen Names (Korean Style)
-        const ramenNames = [
+        const ramenNames = [ // Original list for "Korean Style" names
             "Seoul-ful Slurper", "Kimchi King Bowl", "Spicy Seoul Surprise", "Bulgogi Bomb", 
             "K-Pop Noodle Drop", "Gangnam Style Soup", "Bibim-Boom Bowl", "Seoul Food Express",
             "Ramen-tic Comedy", "Noodle Ninja Creation", "Slurp-tastic Special", "Bowl-dacious Beauty",
@@ -801,7 +797,6 @@
             "Topping Terror Bowl", "Fusion Confusion", "Seoul Kitchen Sink", "Midnight Munchie Mix",
             "Professor Noodle's Lab", "Captain Korea Bowl", "The Spice Alchemist", "Noodle Storm Supreme"
         ];
-
 
         const fusionCombos = [
             ["Paneer Cubes", "Maggi Magic Masala"], ["Crushed Papdi", "Kimchi Bowl"],
@@ -814,46 +809,41 @@
         
         let currentEditState = null; 
 
-        const defaultIngredients = {
+        const defaultIngredients = { // Updated with your final list
             "ramen-base": [
-                { value: "Shin Cup (Spicy)", label: "Shin Cup (Spicy)", id: "shin-cup-spicy", isSpecial: false, emoji: "🍜" },
-                { value: "Kimchi Bowl", label: "Kimchi Bowl", id: "kimchi-bowl", isSpecial: true, emoji: "🌶️" },
-                { value: "Chapagetti", label: "Chapagetti", id: "chapagetti-noodles", isSpecial: false, emoji: "🍝" },
-                { value: "Neoguri", label: "Neoguri (Spicy Seafood)", id: "neoguri-spicy-seafood", isSpecial: false, emoji: "🦑" }
+                { value: "Nongshim Shin", label: "Nongshim Shin", id: "nongshim-shin", isSpecial: false, emoji: "🍜" },
+                { value: "Nongshim Spicy Chicken", label: "Nongshim Spicy Chicken", id: "nongshim-spicy-chicken", isSpecial: false, emoji: "🐔" },
+                { value: "Buldak Carbonara", label: "Buldak Carbonara", id: "buldak-carbonara", isSpecial: false, emoji: "🍝" },
+                { value: "Buldak Quattro Cheese", label: "Buldak Quattro Cheese", id: "buldak-quattro-cheese", isSpecial: false, emoji: "🧀" },
+                { value: "Buldak 2x Spicy", label: "Buldak 2x Spicy", id: "buldak-2x-spicy", isSpecial: true, emoji: "🔥" }
             ],
             "proteins": [
-                { value: "Hard-boiled Eggs", label: "Hard-boiled Eggs", id: "hard-boiled-eggs", isSpecial: false, emoji: "🥚" },
-                { value: "Cubed Tofu", label: "Cubed Tofu", id: "cubed-tofu", isSpecial: false, emoji: "⬜" },
-                { value: "Paneer Cubes", label: "Paneer Cubes", id: "paneer-cubes", isSpecial: true, emoji: "🧀" },
-                { value: "Chicken Slivers", label: "Chicken Slivers (Cooked)", id: "chicken-slivers-cooked", isSpecial: false, emoji: "🐔" }
+                { value: "Grilled Chicken", label: "Grilled Chicken", id: "grilled-chicken", isSpecial: false, emoji: "🍗" },
+                { value: "Ramen Eggs", label: "Ramen Eggs", id: "ramen-eggs", isSpecial: true, emoji: "🥚" }
             ],
             "vegetables": [
-                { value: "Sweet Corn", label: "Sweet Corn Kernels", id: "sweet-corn-kernels", isSpecial: false, emoji: "🌽" },
-                { value: "Spring Onions", label: "Spring Onions (Chopped)", id: "spring-onions-chopped", isSpecial: false, emoji: "🧅" },
-                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: true, emoji: "🍄" },
-                { value: "Shredded Cabbage", label: "Shredded Cabbage", id: "shredded-cabbage", isSpecial: false, emoji: "🥬" },
-                { value: "Bean Sprouts", label: "Bean Sprouts (Fresh)", id: "bean-sprouts-fresh", isSpecial: false, emoji: "🌱" },
-                { value: "Grated Carrots", label: "Grated Carrots", id: "grated-carrots", isSpecial: false, emoji: "🥕" },
-                { value: "Blanched Spinach", label: "Blanched Spinach", id: "blanched-spinach", isSpecial: false, emoji: "🍃" },
-                { value: "Green Chilies", label: "Green Chilies (Sliced)", id: "green-chilies-sliced", isSpecial: false, emoji: "🌶️" },
-                { value: "Cherry Tomatoes", label: "Cherry Tomatoes (Halved)", id: "cherry-tomatoes-halved", isSpecial: false, emoji: "🍅" }
+                { value: "Corn", label: "Corn", id: "corn", isSpecial: false, emoji: "🌽" },
+                { value: "Sautéed Mushrooms", label: "Sautéed Mushrooms", id: "sautéed-mushrooms", isSpecial: false, emoji: "🍄" }, // No longer special by default
+                { value: "Blanched Spinach", label: "Blanched Spinach", id: "blanched-spinach", isSpecial: true, emoji: "🍃" },
+                { value: "Fried Garlic", label: "Fried Garlic", id: "fried-garlic", isSpecial: true, emoji: "🧄" },
+                { value: "Spring Onion Greens", label: "Spring Onion Greens", id: "spring-onion-greens", isSpecial: false, emoji: "🧅" },
+                { value: "Carrots", label: "Carrots", id: "carrots", isSpecial: true, emoji: "🥕" }
             ],
-            "crunchy": [
-                { value: "Fried Garlic", label: "Fried Garlic Flakes", id: "fried-garlic-flakes", isSpecial: true, emoji: "🧄" }, 
-                { value: "Sesame Seeds", label: "Toasted Sesame Seeds", id: "toasted-sesame-seeds", isSpecial: false, emoji: "⚫" },
-                { value: "Roasted Peanuts", label: "Roasted Peanuts (Crushed)", id: "roasted-peanuts-crushed", isSpecial: false, emoji: "🥜" },
-                { value: "Crushed Papdi", label: "Crushed Papdi/Crackers", id: "crushed-papdi-crackers", isSpecial: false, emoji: "🍘" },
-                { value: "Nori Flakes", label: "Nori (Seaweed) Flakes", id: "nori-seaweed-flakes", isSpecial: false, emoji: "🌿" }
+            "crunch": [ // Renamed from "crunchy"
+                { value: "Sea Weed", label: "Sea Weed", id: "sea-weed", isSpecial: true, emoji: "🌿" },
+                { value: "Spicy Peanuts", label: "Spicy Peanuts", id: "spicy-peanuts", isSpecial: false, emoji: "🥜" },
+                { value: "Salted Peanuts", label: "Salted Peanuts", id: "salted-peanuts", isSpecial: false, emoji: "🥜" },
+                { value: "Hot Cheetos", label: "Hot Cheetos", id: "hot-cheetos", isSpecial: true, emoji: "🔥" }
             ],
             "condiments": [
+                { value: "Cheese Slice", label: "Cheese Slice", id: "cheese-slice", isSpecial: false, emoji: "🧀" },
+                { value: "Chilli Crunch", label: "Chilli Crunch", id: "chilli-crunch", isSpecial: true, emoji: "🌶️" },
                 { value: "Soy Sauce", label: "Soy Sauce", id: "soy-sauce", isSpecial: false, emoji: "💧" },
-                { value: "Chili Oil", label: "Chili Oil", id: "chili-oil-condiment", isSpecial: true, emoji: "🔥" }, 
-                { value: "Maggi Magic Masala", label: "Maggi Magic Masala", id: "maggi-magic-masala", isSpecial: true, emoji: "✨" }, 
-                { value: "Sesame Oil", label: "Toasted Sesame Oil", id: "toasted-sesame-oil", isSpecial: false, emoji: "💧" },
-                { value: "Sriracha", label: "Sriracha Hot Sauce", id: "sriracha-hot-sauce", isSpecial: false, emoji: "🌶️" },
-                { value: "Mayonnaise", label: "Kewpie Mayonnaise", id: "kewpie-mayonnaise", isSpecial: false, emoji: "🍦" }, 
-                { value: "Lime Juice", label: "Fresh Lime Juice", id: "fresh-lime-juice", isSpecial: false, emoji: "🍋" },
-                { value: "Fish Sauce", label: "Fish Sauce (Optional)", id: "fish-sauce-optional", isSpecial: false, emoji: "🐟" }
+                { value: "Jalapeno", label: "Jalapeno", id: "jalapeno", isSpecial: true, emoji: "🌶️" },
+                { value: "Kimchi", label: "Kimchi", id: "kimchi", isSpecial: true, emoji: "🥬" },
+                { value: "Nori Komi Furikake Seasoning", label: "Nori Komi Furikake Seasoning", id: "nori-komi-furikake", isSpecial: false, emoji: "✨" },
+                { value: "Cheese Seasoning", label: "Cheese Seasoning", id: "cheese-seasoning", isSpecial: false, emoji: "🧀" },
+                { value: "Fresh Lime", label: "Fresh Lime", id: "fresh-lime", isSpecial: false, emoji: "🍋" }
             ]
         };
 
@@ -879,7 +869,10 @@
         function loadCustomIngredientsToPage() {
             for (const categoryId in customIngredients) {
                 const container = document.getElementById(categoryId);
-                if (!container) continue;
+                if (!container) {
+                    console.warn(`HTML container for category ID "${categoryId}" not found. Make sure your HTML section ID matches the keys in defaultIngredients.`);
+                    continue;
+                }
                 container.innerHTML = '';
                 customIngredients[categoryId].forEach(item => {
                     if (!item.id) item.id = createIdFromString(item.label, categoryId); 
@@ -923,7 +916,7 @@
             currentSelection.ingredients = Array.from(checkboxes).map(cb => cb.value);
             currentSelection.guestName = document.getElementById('guest-name').value;
             calculateFunkiness();
-            generateRamenName(); // Reverted to old style
+            generateRamenName(); // Using reverted name generation
             updateDisplay();
         }
 
@@ -961,11 +954,11 @@
                 return;
             }
             
-            let namePool = [...ramenNames]; // Use a copy of the original names
+            let namePool = [...ramenNames]; 
             if (currentSelection.funkiness > 75) { 
                 namePool.push("The Funky Master's Special", "Chaos Bowl Supreme", "Fusion Explosion Deluxe");
             }
-             if (currentSelection.funkiness > 90) {
+             if (currentSelection.funkiness > 90) { // Even more names for higher funkiness
                 namePool.push("Ultimate Funklord Bowl", "Galaxy Brain Ramen", "Peak Funkiness Achieved");
             }
             
@@ -1168,25 +1161,16 @@
 
                 const nameSpan = document.createElement('span');
                 nameSpan.textContent = ingredient.label;
-                if (ingredient.isSpecial) { // Only add sparkle if actually special
+                if (ingredient.isSpecial) { 
                     const sparkle = document.createElement('span');
                     sparkle.textContent = ' ✨'; 
                     sparkle.title = "Special Ingredient";
                     nameSpan.appendChild(sparkle); 
                 }
-                
-                const specialCheckbox = document.createElement('input');
-                specialCheckbox.type = 'checkbox';
-                specialCheckbox.id = `special-check-${ingredient.id || index}`; 
-                specialCheckbox.checked = ingredient.isSpecial || false;
-                specialCheckbox.title = "Mark as Special";
-                specialCheckbox.style.display = 'none'; // Hide this checkbox, use the one in nameSpecialGroup
-                // specialCheckbox.onchange = () => toggleIngredientSpecialStatus(categoryId, index, specialCheckbox.checked); // Handled by the visible one
+                // No separate checkbox in the list for toggling special, edit button handles this.
                 
                 nameSpecialGroup.appendChild(emojiSpan); 
                 nameSpecialGroup.appendChild(nameSpan);
-                // The special checkbox is now part of the edit flow, not directly in the list item for toggling.
-                // It's controlled by the main edit form.
                 
                 const actionBtnGroup = document.createElement('div');
                 actionBtnGroup.className = 'action-btn-group';
@@ -1213,17 +1197,16 @@
              }
         }
         
-        function toggleIngredientSpecialStatus(categoryId, ingredientIndex, isSpecial) {
-            // This function is now primarily handled through the edit form's "special" checkbox.
-            // If direct toggling from list was desired, it would need a visible checkbox in populateIngredientsInModal
-            // and this function would be its onchange handler.
-            // For now, editing the special status happens via startEditIngredient and handleAddOrUpdateIngredient.
-            customIngredients[categoryId][ingredientIndex].isSpecial = isSpecial;
-            localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
-            loadCustomIngredientsToPage(); 
-            populateIngredientsInModal(); // Refresh to show changes if any (like sparkle on name)
-            console.log(`Ingredient "${customIngredients[categoryId][ingredientIndex].label}" special status set to ${isSpecial}`);
-        }
+        // This function is now effectively replaced by editing via the form.
+        // If direct toggling from the list were re-added, this would be the place.
+        // For now, the 'special' status is changed when the main edit form is submitted.
+        // function toggleIngredientSpecialStatus(categoryId, ingredientIndex, isSpecial) {
+        //     customIngredients[categoryId][ingredientIndex].isSpecial = isSpecial;
+        //     localStorage.setItem('customIngredientsV3', JSON.stringify(customIngredients));
+        //     loadCustomIngredientsToPage(); 
+        //     populateIngredientsInModal();
+        //     console.log(`Ingredient "${customIngredients[categoryId][ingredientIndex].label}" special status set to ${isSpecial}`);
+        // }
 
         function removeIngredientFromManager(categoryId, index) {
             const ingredientLabel = customIngredients[categoryId][index].label;
@@ -1252,8 +1235,7 @@
                 console.error("Name too long."); 
                 return; 
             }
-             // Basic emoji validation (allow one or two characters, or empty)
-            if (ingredientEmoji.length > 2) {
+            if (ingredientEmoji.length > 2) { // Allow 1 or 2 chars for emoji (some flags etc.)
                 console.error("Emoji should be 1 or 2 characters.");
                 ingredientEmojiInput.focus();
                 return;
@@ -1273,7 +1255,7 @@
                 originalIngredient.value = ingredientName; 
                 originalIngredient.isSpecial = isSpecial;
                 originalIngredient.id = createIdFromString(ingredientName, editCategory); 
-                originalIngredient.emoji = ingredientEmoji; // Assign directly, "" if empty. No default "🍲" on edit if cleared.
+                originalIngredient.emoji = ingredientEmoji; 
 
 
                 console.log(`Ingredient "${originalLabel}" updated to "${ingredientName}".`);
@@ -1290,7 +1272,7 @@
                     label: ingredientName, 
                     id: ingredientId, 
                     isSpecial: isSpecial,
-                    emoji: ingredientEmoji || '🍲' // Default "🍲" only for brand new if empty
+                    emoji: ingredientEmoji || '🍲' 
                 };
                 customIngredients[categoryId].push(newIngredient);
                 console.log(`"${ingredientName}" added.`);
@@ -1300,7 +1282,7 @@
             populateIngredientsInModal(); 
             loadCustomIngredientsToPage(); 
             
-            if (!currentEditState) { // Only clear if it was an "Add" operation
+            if (!currentEditState) { 
                 newIngredientInput.value = ''; 
                 ingredientEmojiInput.value = '';
                 document.getElementById('new-ingredient-special').checked = false; 
